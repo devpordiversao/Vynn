@@ -1,0 +1,46 @@
+{
+  "historia": [
+    {
+      "pergunta": "Pergunta 1 de historia?",
+      "resposta": "resposta1"
+    },
+    {
+      "pergunta": "Pergunta 2 de historia?",
+      "resposta": "resposta2"
+    },
+    {
+      "pergunta": "Pergunta 3 de historia?",
+      "resposta": "resposta3"
+    },
+    {
+      "pergunta": "Pergunta 4 de historia?",
+      "resposta": "resposta4"
+    },
+    {
+      "pergunta": "Pergunta 5 de historia?",
+      "resposta": "resposta5"
+    }
+  ],
+  "geografia": [
+    {
+      "pergunta": "Pergunta 1 de geografia?",
+      "resposta": "resposta1"
+    },
+    {
+      "pergunta": "Pergunta 2 de geografia?",
+      "resposta": "resposta2"
+    },
+    {
+      "pergunta": "Pergunta 3 de geografia?",
+      "resposta": "resposta3"
+    },
+    {
+      "pergunta": "Pergunta 4 de geografia?",
+      "resposta": "resposta4"
+    },
+    {
+      "pergunta": "Pergunta 5 de geografia?",
+      "resposta": "resposta5"
+    }
+  ]
+}
