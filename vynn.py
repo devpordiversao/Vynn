@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands, tasks
-import random, asyncio, datetime
+import asyncio, random, datetime, os
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="/", intents=intents)
@@ -16,7 +16,7 @@ def add_pontos(user_id, pontos=1):
     leaderboard[user_id] = leaderboard.get(user_id, 0) + pontos
 
 # ---------------------------
-# Logs Privados e Servidor
+# Funções de Logs
 # ---------------------------
 async def enviar_log_privado(guild, usuario, acao, motivo=None):
     admin = await bot.fetch_user(ADMIN_ID)
@@ -28,7 +28,8 @@ async def enviar_log_privado(guild, usuario, acao, motivo=None):
     embed.add_field(name="Servidor", value=guild.name, inline=False)
     embed.add_field(name="Usuário", value=str(usuario), inline=False)
     embed.add_field(name="Ação", value=acao, inline=False)
-    if motivo: embed.add_field(name="Motivo", value=motivo, inline=False)
+    if motivo:
+        embed.add_field(name="Motivo", value=motivo, inline=False)
     await admin.send(embed=embed)
 
 async def enviar_log_servidor(guild, usuario, acao, motivo=None):
@@ -41,7 +42,8 @@ async def enviar_log_servidor(guild, usuario, acao, motivo=None):
         )
         embed.add_field(name="Usuário", value=str(usuario), inline=False)
         embed.add_field(name="Ação", value=acao, inline=False)
-        if motivo: embed.add_field(name="Motivo", value=motivo, inline=False)
+        if motivo:
+            embed.add_field(name="Motivo", value=motivo, inline=False)
         await log_channel.send(embed=embed)
 
 # ---------------------------
@@ -51,33 +53,39 @@ async def enviar_log_servidor(guild, usuario, acao, motivo=None):
 async def on_ready():
     await bot.tree.sync()
     print(f"Bot online! {bot.user}")
-
-# ---------------------------
+    # ---------------------------
 # /perfil
 # ---------------------------
 @bot.tree.command(name="perfil", description="Mostra estatísticas do usuário")
-async def perfil(interaction: discord.Interaction, usuario: discord.Member=None):
+async def perfil(interaction: discord.Interaction, usuario: discord.Member = None):
     usuario = usuario or interaction.user
     pontos = leaderboard.get(usuario.id, 0)
-    await interaction.response.send_message(
-        embed=discord.Embed(title=f"Perfil de {usuario}", description=f"Pontos: {pontos}", color=0x00FF00)
+    embed = discord.Embed(
+        title=f"Perfil de {usuario}",
+        description=f"Pontos: {pontos}",
+        color=0x00FF00
     )
+    await interaction.response.send_message(embed=embed)
 
 # ---------------------------
 # /temas
 # ---------------------------
 @bot.tree.command(name="temas", description="Lista todos os temas disponíveis")
 async def temas(interaction: discord.Interaction):
-    await interaction.response.send_message(
-        "Temas disponíveis: Animes, História, Geografia, Futebol, Matemática, Curiosidades"
+    lista = ["Animes", "História", "Geografia", "Futebol", "Matemática", "Curiosidades"]
+    embed = discord.Embed(
+        title="Temas disponíveis",
+        description="\n".join(f"- {t}" for t in lista),
+        color=0x1ABC9C
     )
+    await interaction.response.send_message(embed=embed)
 
 # ---------------------------
 # /ban
 # ---------------------------
 @bot.tree.command(name="ban", description="Banir usuário com logs")
 @commands.has_permissions(ban_members=True)
-async def ban(interaction: discord.Interaction, usuario: discord.Member, motivo: str="Sem motivo"):
+async def ban(interaction: discord.Interaction, usuario: discord.Member, motivo: str = "Sem motivo"):
     await usuario.ban(reason=motivo)
     await interaction.response.send_message(f"{usuario} banido! 🛑")
     await enviar_log_privado(interaction.guild, usuario, "BAN", motivo)
@@ -88,7 +96,7 @@ async def ban(interaction: discord.Interaction, usuario: discord.Member, motivo:
 # ---------------------------
 @bot.tree.command(name="kick", description="Expulsar usuário com logs")
 @commands.has_permissions(kick_members=True)
-async def kick(interaction: discord.Interaction, usuario: discord.Member, motivo: str="Sem motivo"):
+async def kick(interaction: discord.Interaction, usuario: discord.Member, motivo: str = "Sem motivo"):
     await usuario.kick(reason=motivo)
     await interaction.response.send_message(f"{usuario} expulso! 👢")
     await enviar_log_privado(interaction.guild, usuario, "KICK", motivo)
@@ -99,7 +107,7 @@ async def kick(interaction: discord.Interaction, usuario: discord.Member, motivo
 # ---------------------------
 @bot.tree.command(name="mute", description="Mutar usuário por tempo determinado")
 @commands.has_permissions(manage_roles=True)
-async def mute(interaction: discord.Interaction, usuario: discord.Member, tempo: str="10m"):
+async def mute(interaction: discord.Interaction, usuario: discord.Member, tempo: str = "10m"):
     role = discord.utils.get(interaction.guild.roles, name="Muted")
     if not role:
         role = await interaction.guild.create_role(name="Muted")
@@ -120,19 +128,18 @@ async def mute(interaction: discord.Interaction, usuario: discord.Member, tempo:
 # ---------------------------
 # /limpar
 # ---------------------------
-@bot.tree.command(name="limpar", description="Apaga mensagens")
+@bot.tree.command(name="limpar", description="Apaga mensagens do canal ou de um usuário")
 @commands.has_permissions(manage_messages=True)
-async def limpar(interaction: discord.Interaction, quantidade: int=10, usuario: discord.Member=None):
+async def limpar(interaction: discord.Interaction, quantidade: int = 10, usuario: discord.Member = None):
     if usuario:
-        msgs = [m async for m in interaction.channel.history(limit=100) if m.author==usuario]
+        msgs = [m async for m in interaction.channel.history(limit=100) if m.author == usuario]
         await interaction.channel.delete_messages(msgs[:quantidade])
         await interaction.response.send_message(f"{quantidade} mensagens de {usuario} apagadas!")
     else:
         await interaction.channel.purge(limit=quantidade)
         await interaction.response.send_message(f"{quantidade} mensagens apagadas!")
-
-# ---------------------------
-# Minigames: Exemplo Pedra-Papel-Tesoura
+        # ---------------------------
+# Minigame: Pedra, Papel ou Tesoura
 # ---------------------------
 class PPTView(discord.ui.View):
     def __init__(self, bot_escolha):
@@ -145,6 +152,7 @@ class PPTView(discord.ui.View):
             await interaction.response.send_message("Você já clicou!", ephemeral=True)
             return
         self.clicked_users.append(interaction.user.id)
+
         if escolha_user == self.bot_escolha:
             resultado = "Empate!"
         elif (escolha_user=="Pedra" and self.bot_escolha=="Tesoura") or \
@@ -154,6 +162,7 @@ class PPTView(discord.ui.View):
             add_pontos(interaction.user.id)
         else:
             resultado = "Você perdeu!"
+
         await interaction.response.send_message(
             f"Você: **{escolha_user}**\nBot: **{self.bot_escolha}**\n**{resultado}**"
         )
@@ -168,15 +177,88 @@ class PPTView(discord.ui.View):
     async def tesoura(self, button, interaction):
         await self.resultado(interaction, "Tesoura")
 
-@bot.tree.command(name="ppt", description="Jogue Pedra, Papel ou Tesoura")
+@bot.tree.command(name="ppt", description="Jogue Pedra, Papel ou Tesoura com o bot")
 async def ppt(interaction: discord.Interaction):
-    escolhas = ["Pedra","Papel","Tesoura"]
+    escolhas = ["Pedra", "Papel", "Tesoura"]
     bot_escolha = random.choice(escolhas)
-    await interaction.response.send_message(embed=discord.Embed(title="Pedra, Papel ou Tesoura", description="Escolha abaixo:", color=0xFFD700),
-                                           view=PPTView(bot_escolha))
+    embed = discord.Embed(
+        title="Pedra, Papel ou Tesoura",
+        description="Escolha sua opção abaixo:",
+        color=0xFFD700
+    )
+    await interaction.response.send_message(embed=embed, view=PPTView(bot_escolha))
 
 # ---------------------------
-# Rodar Bot
+# Minigame: Lançar Moeda
 # ---------------------------
-import os
-bot.run(os.environ["DISCORD_TOKEN"])
+class CoinFlipView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=15)
+        self.clicked_users = []
+
+    async def resultado(self, interaction, escolha_user):
+        if interaction.user.id in self.clicked_users:
+            await interaction.response.send_message("Você já clicou!", ephemeral=True)
+            return
+        self.clicked_users.append(interaction.user.id)
+
+        bot_escolha = random.choice(["Cara", "Coroa"])
+        if escolha_user == bot_escolha:
+            resultado = "Você ganhou!"
+            add_pontos(interaction.user.id)
+        else:
+            resultado = "Você perdeu!"
+
+        await interaction.response.send_message(
+            f"Você: **{escolha_user}**\nResultado: **{bot_escolha}**\n**{resultado}**"
+        )
+
+    @discord.ui.button(label="Cara", style=discord.ButtonStyle.primary)
+    async def cara(self, button, interaction):
+        await self.resultado(interaction, "Cara")
+    @discord.ui.button(label="Coroa", style=discord.ButtonStyle.success)
+    async def coroa(self, button, interaction):
+        await self.resultado(interaction, "Coroa")
+
+@bot.tree.command(name="moeda", description="Jogue cara ou coroa")
+async def moeda(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title="Moeda",
+        description="Escolha Cara ou Coroa:",
+        color=0x00FFFF
+    )
+    await interaction.response.send_message(embed=embed, view=CoinFlipView())
+
+# ---------------------------
+# Minigame: Lançar Dado
+# ---------------------------
+class DiceView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=15)
+        self.clicked_users = []
+
+    async def resultado(self, interaction):
+        if interaction.user.id in self.clicked_users:
+            await interaction.response.send_message("Você já rolou!", ephemeral=True)
+            return
+        self.clicked_users.append(interaction.user.id)
+
+        valor = random.randint(1, 6)
+        add_pontos(interaction.user.id)
+        await interaction.response.send_message(
+            f"{interaction.user.mention} rolou o dado e caiu: **{valor}** 🎲\nVocê ganhou 1 ponto!"
+        )
+
+    @discord.ui.button(label="Rolar Dado", style=discord.ButtonStyle.primary)
+    async def rolar(self, button, interaction):
+        await self.resultado(interaction)
+
+@bot.tree.command(name="dado", description="Role um dado de 6 lados")
+async def dado(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title="Dado",
+        description="Clique para rolar o dado:",
+        color=0xFFA500
+    )
+    await interaction.response.send_message(embed=embed, view=DiceView())
+    
