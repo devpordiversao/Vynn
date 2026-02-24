@@ -1,58 +1,102 @@
 import discord
 from discord.ext import commands, tasks
-import asyncio, random, datetime, os
+import json
+import asyncio
+import os
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="/", intents=intents)
 
-ADMIN_ID = 1327679436128129159  # Seu ID para logs privados
+# ---------------------------------------
+# CARREGANDO TEMAS
+# ---------------------------------------
+temas_perguntas = {}
+tema_files = ["temas.json","temas2.json","temas3.json","temas4.json"]
+tema_nomes = ["Animes","História","Futebol","Matemática"]
 
-# ---------------------------
-# Leaderboard
-# ---------------------------
-leaderboard = {}  # {user_id: pontos}
+for nome, arquivo in zip(tema_nomes, tema_files):
+    with open(arquivo, "r", encoding="utf-8") as f:
+        temas_perguntas[nome] = json.load(f)
 
-def add_pontos(user_id, pontos=1):
-    leaderboard[user_id] = leaderboard.get(user_id, 0) + pontos
+# ---------------------------------------
+# ESTRUTURAS DE CONTROLE
+# ---------------------------------------
+quiz_ativo = {}   # Canal: {tema, indice, modo}
+quiz_top3 = {}    # Canal: {user_id: pontos}
 
-# ---------------------------
-# Funções de Logs
-# ---------------------------
-async def enviar_log_privado(guild, usuario, acao, motivo=None):
-    admin = await bot.fetch_user(ADMIN_ID)
-    embed = discord.Embed(
-        title="Log de Moderação",
-        color=0xFF0000,
-        timestamp=datetime.datetime.utcnow()
-    )
-    embed.add_field(name="Servidor", value=guild.name, inline=False)
-    embed.add_field(name="Usuário", value=str(usuario), inline=False)
-    embed.add_field(name="Ação", value=acao, inline=False)
-    if motivo:
-        embed.add_field(name="Motivo", value=motivo, inline=False)
-    await admin.send(embed=embed)
+# ---------------------------------------
+# FUNÇÃO PARA CRIAR BOTÕES DE MÚLTIPLA ESCOLHA
+# ---------------------------------------
+def criar_view(pergunta_data, usuario_acertou):
+    view = discord.ui.View(timeout=None)
+    ja_clicou = set()
+    
+    for i, alt in enumerate(pergunta_data["alternativas"]):
+        letra = chr(65+i)  # A, B, C, D
+        btn = discord.ui.Button(label=f"{letra}. {alt}", style=discord.ButtonStyle.primary)
+        
+        async def button_callback(interaction, resposta=alt):
+            if interaction.user.id in ja_clicou:
+                await interaction.response.send_message("Você já clicou!", ephemeral=True)
+                return
+            ja_clicou.add(interaction.user.id)
+            
+            correto = any(resposta.lower() in r.lower() or r.lower() in resposta.lower() for r in pergunta_data["resposta"])
+            if correto:
+                usuario_acertou[interaction.user.id] = usuario_acertou.get(interaction.user.id, 0) + 1
+                await interaction.response.send_message(f"✅ Você acertou, {interaction.user.name}!", ephemeral=True)
+            else:
+                await interaction.response.send_message(f"❌ Você errou! {interaction.user.name}", ephemeral=True)
+        
+        btn.callback = button_callback
+        view.add_item(btn)
+    return view
 
-async def enviar_log_servidor(guild, usuario, acao, motivo=None):
-    log_channel = discord.utils.get(guild.text_channels, name="logs")
-    if log_channel:
-        embed = discord.Embed(
-            title="Log de Moderação",
-            color=0xFF0000,
-            timestamp=datetime.datetime.utcnow()
-        )
-        embed.add_field(name="Usuário", value=str(usuario), inline=False)
-        embed.add_field(name="Ação", value=acao, inline=False)
-        if motivo:
-            embed.add_field(name="Motivo", value=motivo, inline=False)
-        await log_channel.send(embed=embed)
+# ---------------------------------------
+# FUNÇÃO PARA ENVIAR PERGUNTA COM TIMER
+# ---------------------------------------
+async def enviar_pergunta(interaction: discord.Interaction, tema, indice):
+    pergunta_data = temas_perguntas[tema][indice]
+    embed = discord.Embed(title=f"Pergunta {indice+1}/{len(temas_perguntas[tema])}", description=pergunta_data["pergunta"], color=discord.Color.blurple())
+    if pergunta_data.get("imagem"):
+        embed.set_image(url=pergunta_data["imagem"])
+    
+    usuario_acertou = {}
+    view = criar_view(pergunta_data, usuario_acertou)
+    
+    msg = await interaction.response.send_message(embed=embed, view=view, ephemeral=False)
+    
+    # Timer visível (atualiza a cada 5 segundos)
+    tempo = 20
+    while tempo > 0:
+        await asyncio.sleep(5)
+        tempo -= 5
+        try:
+            await msg.edit(embed=discord.Embed(
+                title=f"Pergunta {indice+1}/{len(temas_perguntas[tema])}",
+                description=f"{pergunta_data['pergunta']}\n⏱ Tempo restante: {tempo} segundos",
+                color=discord.Color.blurple()
+            ), view=view)
+        except:
+            pass
+    
+    # Se ninguém acertou
+    if not usuario_acertou:
+        await interaction.followup.send(f"⏰ Tempo esgotado! Ninguém acertou. Resposta correta: {', '.join(pergunta_data['resposta'])}")
+    
+    # Atualizando top3
+    if interaction.channel.id not in quiz_top3:
+        quiz_top3[interaction.channel.id] = {}
+    for user_id, pontos in usuario_acertou.items():
+        quiz_top3[interaction.channel.id][user_id] = quiz_top3[interaction.channel.id].get(user_id, 0) + pontos
 
-# ---------------------------
-# Bot Ready
-# ---------------------------
+# ---------------------------------------
+# BOT PRONTO PARA REGISTRAR SLASH COMMANDS
+# ---------------------------------------
 @bot.event
 async def on_ready():
     await bot.tree.sync()
-    print(f"Bot online! {bot.user}")
+    print(f'Bot logado como {bot.user}')
     # ---------------------------
 # /perfil
 # ---------------------------
