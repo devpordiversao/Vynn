@@ -1,29 +1,49 @@
 {
-  "ciencia": [
-    {
-      "pergunta": "Qual é o elemento químico da água?",
-      "resposta": "B",
-      "opcoes": {
-        "A": "CO2",
-        "B": "H2O",
-        "C": "O2",
-        "D": "NaCl"
-      },
-      "imagem": "https://i.imgur.com/IOp6n3y.png"
-    }
-  ],
+  "curiosidades": [
+    {"pergunta":"Qual planeta é conhecido como o Planeta Vermelho?","resposta":"A","opcoes":{"A":"Marte","B":"Júpiter","C":"Vênus","D":"Mercúrio"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o metal mais leve do mundo?","resposta":"C","opcoes":{"A":"Ouro","B":"Alumínio","C":"Lítio","D":"Prata"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o maior oceano do planeta?","resposta":"B","opcoes":{"A":"Atlântico","B":"Pacífico","C":"Índico","D":"Ártico"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o animal mais rápido do mundo?","resposta":"D","opcoes":{"A":"Leão","B":"Cavalo","C":"Tigre","D":"Guepardo"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual elemento químico tem o símbolo O?","resposta":"A","opcoes":{"A":"Oxigênio","B":"Ouro","C":"Prata","D":"Osmio"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem inventou a lâmpada elétrica?","resposta":"B","opcoes":{"A":"Tesla","B":"Thomas Edison","C":"Galileu","D":"Newton"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é a fórmula da água?","resposta":"A","opcoes":{"A":"H2O","B":"CO2","C":"O2","D":"NaCl"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quantos continentes existem no mundo?","resposta":"C","opcoes":{"A":"5","B":"6","C":"7","D":"8"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem escreveu 'A Origem das Espécies'?","resposta":"D","opcoes":{"A":"Einstein","B":"Newton","C":"Galileu","D":"Charles Darwin"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o maior planeta do Sistema Solar?","resposta":"B","opcoes":{"A":"Terra","B":"Júpiter","C":"Saturno","D":"Marte"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
 
-  "tecnologia": [
-    {
-      "pergunta": "O que significa CPU?",
-      "resposta": "A",
-      "opcoes": {
-        "A": "Central Processing Unit",
-        "B": "Computer Personal Unit",
-        "C": "Central Program Utility",
-        "D": "Core Processing User"
-      },
-      "imagem": "https://i.imgur.com/IOp6n3y.png"
-    }
+    {"pergunta":"Qual é a capital da França?","resposta":"A","opcoes":{"A":"Paris","B":"Londres","C":"Berlim","D":"Madri"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quantos segundos tem uma hora?","resposta":"C","opcoes":{"A":"5000","B":"3500","C":"3600","D":"4000"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem pintou a Mona Lisa?","resposta":"D","opcoes":{"A":"Michelangelo","B":"Raphael","C":"Donatello","D":"Leonardo da Vinci"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual gás é essencial para respirarmos?","resposta":"B","opcoes":{"A":"Nitrogênio","B":"Oxigênio","C":"Carbono","D":"Hélio"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem descobriu a gravidade?","resposta":"C","opcoes":{"A":"Einstein","B":"Galileu","C":"Isaac Newton","D":"Tesla"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o maior órgão do corpo humano?","resposta":"A","opcoes":{"A":"Pele","B":"Coração","C":"Fígado","D":"Pulmão"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quantos ossos tem o corpo humano adulto?","resposta":"D","opcoes":{"A":"200","B":"210","C":"190","D":"206"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é a velocidade da luz?","resposta":"C","opcoes":{"A":"300.000 km/h","B":"150.000 km/s","C":"299.792 km/s","D":"1.000.000 km/s"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem criou a teoria da relatividade?","resposta":"A","opcoes":{"A":"Albert Einstein","B":"Isaac Newton","C":"Galileu","D":"Tesla"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é a unidade básica da vida?","resposta":"B","opcoes":{"A":"Molécula","B":"Célula","C":"Átomo","D":"Teia"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+
+    {"pergunta":"Quantos planetas existem no Sistema Solar?","resposta":"C","opcoes":{"A":"7","B":"8","C":"8","D":"9"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem inventou o telefone?","resposta":"D","opcoes":{"A":"Einstein","B":"Tesla","C":"Galileu","D":"Alexander Graham Bell"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o planeta mais próximo do Sol?","resposta":"A","opcoes":{"A":"Mercúrio","B":"Vênus","C":"Terra","D":"Marte"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o maior deserto do mundo?","resposta":"B","opcoes":{"A":"Sahara","B":"Antártico","C":"Gobi","D":"Kalahari"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o metal mais precioso?","resposta":"C","opcoes":{"A":"Prata","B":"Platina","C":"Ouro","D":"Diamante"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem inventou o avião?","resposta":"A","opcoes":{"A":"Irmãos Wright","B":"Tesla","C":"Einstein","D":"Da Vinci"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o planeta mais quente do Sistema Solar?","resposta":"D","opcoes":{"A":"Marte","B":"Mercúrio","C":"Júpiter","D":"Vênus"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o país mais populoso do mundo?","resposta":"B","opcoes":{"A":"Índia","B":"China","C":"EUA","D":"Brasil"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem escreveu 'Hamlet'?","resposta":"C","opcoes":{"A":"Goethe","B":"Cervantes","C":"Shakespeare","D":"Dante"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é a moeda do Japão?","resposta":"A","opcoes":{"A":"Iene","B":"Yuan","C":"Won","D":"Dólar"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual planeta tem anéis?","resposta":"C","opcoes":{"A":"Marte","B":"Júpiter","C":"Saturno","D":"Vênus"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é a língua mais falada no mundo?","resposta":"B","opcoes":{"A":"Inglês","B":"Mandarim","C":"Espanhol","D":"Hindi"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é a capital da Itália?","resposta":"C","opcoes":{"A":"Milão","B":"Veneza","C":"Roma","D":"Florença"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem pintou 'O Grito'?","resposta":"A","opcoes":{"A":"Edvard Munch","B":"Van Gogh","C":"Picasso","D":"Da Vinci"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o maior animal terrestre?","resposta":"D","opcoes":{"A":"Tigre","B":"Elefante Asiático","C":"Rinoceronte","D":"Elefante Africano"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o país do futebol?","resposta":"B","opcoes":{"A":"Argentina","B":"Brasil","C":"Alemanha","D":"Itália"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o maior planeta anão?","resposta":"C","opcoes":{"A":"Ceres","B":"Haumea","C":"Plutão","D":"Makemake"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem criou a internet?","resposta":"A","opcoes":{"A":"Tim Berners-Lee","B":"Tesla","C":"Einstein","D":"Newton"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o menor osso do corpo humano?","resposta":"B","opcoes":{"A":"Fêmur","B":"Estribo","C":"Tíbia","D":"Ulna"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem formulou a lei da gravitação universal?","resposta":"C","opcoes":{"A":"Einstein","B":"Galileu","C":"Newton","D":"Tesla"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é a principal fonte de energia do Sol?","resposta":"A","opcoes":{"A":"Fusão nuclear","B":"Fissão nuclear","C":"Combustão","D":"Geotérmica"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Qual é o maior planeta rochoso do Sistema Solar?","resposta":"D","opcoes":{"A":"Mercúrio","B":"Vênus","C":"Marte","D":"Terra"},"imagem":"https://i.imgur.com/KrEJ1xn.png"},
+    {"pergunta":"Quem escreveu '1984'?","resposta":"C","opcoes":{"A":"Aldous Huxley","B":"F. Scott Fitzgerald","C":"George Orwell","D":"Ray Bradbury"},"imagem":"https://i.imgur.com/KrEJ1xn.png"}
   ]
-}
+    }
