@@ -1,54 +1,50 @@
 {
   "historia": [
-    {
-      "pergunta": "Quem descobriu o Brasil?",
-      "resposta": "A",
-      "opcoes": {
-        "A": "Pedro Álvares Cabral",
-        "B": "Cristóvão Colombo",
-        "C": "Napoleão",
-        "D": "Dom Pedro I"
-      },
-      "imagem": "https://i.imgur.com/0rZ4wYB.png"
-    },
-    {
-      "pergunta": "Em que ano começou a Segunda Guerra Mundial?",
-      "resposta": "B",
-      "opcoes": {
-        "A": "1945",
-        "B": "1939",
-        "C": "1914",
-        "D": "1929"
-      },
-      "imagem": "https://i.imgur.com/0rZ4wYB.png"
-    }
-  ],
+    {"pergunta":"Quem descobriu o Brasil?","resposta":"A","opcoes":{"A":"Pedro Álvares Cabral","B":"Cristóvão Colombo","C":"Vasco da Gama","D":"Dom Pedro I"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Em que ano começou a Segunda Guerra Mundial?","resposta":"B","opcoes":{"A":"1945","B":"1939","C":"1914","D":"1929"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o primeiro presidente do Brasil?","resposta":"C","opcoes":{"A":"Getúlio Vargas","B":"D. Pedro II","C":"Deodoro da Fonseca","D":"Juscelino Kubitschek"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual era o principal produto da economia colonial brasileira?","resposta":"B","opcoes":{"A":"Café","B":"Açúcar","C":"Ouro","D":"Algodão"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o líder da Independência do Brasil?","resposta":"D","opcoes":{"A":"Tiradentes","B":"Zumbi","C":"Dom João VI","D":"Dom Pedro I"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual país foi aliado da Alemanha na Segunda Guerra Mundial?","resposta":"A","opcoes":{"A":"Itália","B":"Inglaterra","C":"França","D":"EUA"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Em que ano foi proclamada a República no Brasil?","resposta":"B","opcoes":{"A":"1822","B":"1889","C":"1808","D":"1891"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o último imperador do Brasil?","resposta":"C","opcoes":{"A":"Pedro I","B":"Pedro II","C":"Dom Pedro II","D":"Tiradentes"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual guerra ficou conhecida como a Guerra dos Cem Anos?","resposta":"B","opcoes":{"A":"Guerra Fria","B":"Inglaterra x França","C":"Segunda Guerra Mundial","D":"Revolução Francesa"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o líder da Revolução Russa de 1917?","resposta":"A","opcoes":{"A":"Lenin","B":"Stalin","C":"Trotsky","D":"Kerensky"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
 
-  "geografia": [
-    {
-      "pergunta": "Qual é o maior país do mundo?",
-      "resposta": "D",
-      "opcoes": {
-        "A": "Brasil",
-        "B": "China",
-        "C": "EUA",
-        "D": "Rússia"
-      },
-      "imagem": "https://i.imgur.com/zYIlgBl.png"
-    }
-  ],
+    {"pergunta":"Em que ano caiu o Muro de Berlim?","resposta":"C","opcoes":{"A":"1980","B":"1985","C":"1989","D":"1991"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o faraó egípcio mais famoso?","resposta":"B","opcoes":{"A":"Ramsés","B":"Tutancâmon","C":"Cleópatra","D":"Akhenaton"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem pintou a Mona Lisa?","resposta":"C","opcoes":{"A":"Michelangelo","B":"Raphael","C":"Leonardo da Vinci","D":"Donatello"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual tratado terminou a Primeira Guerra Mundial?","resposta":"A","opcoes":{"A":"Tratado de Versalhes","B":"Tratado de Tordesilhas","C":"Tratado de Paris","D":"Tratado de Berlim"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o líder da independência dos EUA?","resposta":"B","opcoes":{"A":"George Washington","B":"Thomas Jefferson","C":"Abraham Lincoln","D":"Benjamin Franklin"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem inventou a imprensa?","resposta":"A","opcoes":{"A":"Gutenberg","B":"Newton","C":"Galileu","D":"Edison"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual civilização construiu Machu Picchu?","resposta":"C","opcoes":{"A":"Astecas","B":"Maias","C":"Incas","D":"Egípcios"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o líder da Revolução Francesa?","resposta":"B","opcoes":{"A":"Napoleão","B":"Robespierre","C":"Louis XVI","D":"Voltaire"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual era a capital do Império Romano?","resposta":"A","opcoes":{"A":"Roma","B":"Atenas","C":"Constantinopla","D":"Cartago"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual civilização criou o alfabeto?","resposta":"D","opcoes":{"A":"Fenícios","B":"Egípcios","C":"Sumérios","D":"Fenícios"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o imperador romano que se tornou cristão?","resposta":"B","opcoes":{"A":"Nero","B":"Constantino","C":"César Augusto","D":"Marco Aurélio"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
 
-  "matematica": [
-    {
-      "pergunta": "Quanto é 9 x 7?",
-      "resposta": "A",
-      "opcoes": {
-        "A": "63",
-        "B": "56",
-        "C": "72",
-        "D": "49"
-      },
-      "imagem": "https://i.imgur.com/IOp6n3y.png"
-    }
+    {"pergunta":"Quem escreveu ‘A República’?","resposta":"C","opcoes":{"A":"Aristóteles","B":"Sócrates","C":"Platão","D":"Cícero"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual país colonizou o Brasil?","resposta":"D","opcoes":{"A":"Espanha","B":"França","C":"Holanda","D":"Portugal"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual era o nome do imperador do Japão durante a Segunda Guerra?","resposta":"A","opcoes":{"A":"Hirohito","B":"Akihito","C":"Meiji","D":"Taisho"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi líder da Revolução Industrial na Inglaterra?","resposta":"C","opcoes":{"A":"James Watt","B":"Darwin","C":"Richard Arkwright","D":"Edison"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem descobriu a América?","resposta":"B","opcoes":{"A":"Pedro Álvares Cabral","B":"Cristóvão Colombo","C":"Vasco da Gama","D":"Ferdinando Magalhães"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quando aconteceu a Revolução Russa?","resposta":"C","opcoes":{"A":"1905","B":"1922","C":"1917","D":"1939"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o principal líder da Independência da Índia?","resposta":"D","opcoes":{"A":"Jawaharlal Nehru","B":"Indira Gandhi","C":"Muhammad Ali Jinnah","D":"Mahatma Gandhi"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual foi a primeira civilização da Mesopotâmia?","resposta":"A","opcoes":{"A":"Sumérios","B":"Babilônios","C":"Assírios","D":"Persas"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Em que ano terminou a Primeira Guerra Mundial?","resposta":"B","opcoes":{"A":"1916","B":"1918","C":"1919","D":"1920"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o rei da Inglaterra durante a Revolução Americana?","resposta":"C","opcoes":{"A":"George Washington","B":"Thomas Jefferson","C":"George III","D":"Henry VIII"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem inventou a lâmpada elétrica?","resposta":"B","opcoes":{"A":"Tesla","B":"Thomas Edison","C":"Franklin","D":"Volta"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o líder da Revolução Chinesa?","resposta":"D","opcoes":{"A":"Mao Zedong","B":"Sun Yat-sen","C":"Deng Xiaoping","D":"Chiang Kai-shek"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual país lançou a bomba atômica em Hiroshima?","resposta":"A","opcoes":{"A":"EUA","B":"Japão","C":"Alemanha","D":"URSS"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o responsável pela queda da Bastilha?","resposta":"B","opcoes":{"A":"Napoleão","B":"Revolucionários Franceses","C":"Luis XVI","D":"Robespierre"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual era a religião oficial do Império Romano?","resposta":"C","opcoes":{"A":"Cristianismo","B":"Islamismo","C":"Paganismo","D":"Budismo"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Qual país invadiu a Polônia em 1939?","resposta":"D","opcoes":{"A":"França","B":"Inglaterra","C":"Itália","D":"Alemanha"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o fundador do Império Mongol?","resposta":"A","opcoes":{"A":"Genghis Khan","B":"Kublai Khan","C":"Attila","D":"Tamerlão"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem descobriu a penicilina?","resposta":"B","opcoes":{"A":"Louis Pasteur","B":"Alexander Fleming","C":"Marie Curie","D":"Einstein"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem pintou a Capela Sistina?","resposta":"C","opcoes":{"A":"Leonardo da Vinci","B":"Raphael","C":"Michelangelo","D":"Donatello"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o primeiro homem a chegar à Lua?","resposta":"A","opcoes":{"A":"Neil Armstrong","B":"Buzz Aldrin","C":"Yuri Gagarin","D":"Michael Collins"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quando começou a Revolução Francesa?","resposta":"B","opcoes":{"A":"1776","B":"1789","C":"1799","D":"1804"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o líder da Alemanha nazista?","resposta":"C","opcoes":{"A":"Hitler","B":"Stalin","C":"Adolf Hitler","D":"Mussolini"},"imagem":"https://i.imgur.com/0rZ4wYB.png"},
+    {"pergunta":"Quem foi o imperador do Japão durante a Era Meiji?","resposta":"D","opcoes":{"A":"Hirohito","B":"Akihito","C":"Taisho","D":"Meiji"},"imagem":"https://i.imgur.com/0rZ4wYB.png"}
   ]
-}
+    }
