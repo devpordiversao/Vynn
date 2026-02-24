@@ -5,7 +5,6 @@ import json
 import random
 import asyncio
 import os
-import difflib
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -16,10 +15,10 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 
 # ----------- CARREGAR TEMAS -----------
 temas_files = {
-    "naruto": "temas.json",
-    "escola": "temas2.json",
-    "futebol": "temas3.json",
-    "curiosidades": "temas4.json"
+    "Naruto": "temas.json",
+    "Escola": "temas2.json",
+    "Futebol": "temas3.json",
+    "Curiosidades": "temas4.json"
 }
 
 temas_data = {}
@@ -28,14 +27,7 @@ for key, file in temas_files.items():
         temas_data[key] = json.load(f)
 
 # ----------- PARTIDAS ATIVAS -----------
-partidas_ativas = {}  # guild_id: {tema, perguntas, index, auto, pontos, multipla, ja_clicou}
-
-# ----------- COMPARAÇÃO SIMILARIDADE -----------
-def comparar_resposta(correta, resposta_usuario):
-    correta = correta.lower().strip()
-    resposta_usuario = resposta_usuario.lower().strip()
-    ratio = difflib.SequenceMatcher(None, correta, resposta_usuario).ratio()
-    return ratio >= 0.8  # 80% de similaridade aceita
+partidas_ativas = {}  # guild_id: {tema, perguntas, index, auto, pontos, ja_clicou}
 
 # ----------- BOTÕES MÚLTIPLA ESCOLHA -----------
 class MultipleChoiceView(ui.View):
@@ -63,14 +55,14 @@ class MCButton(ui.Button):
             await interaction.response.send_message("❌ Você já respondeu!", ephemeral=True)
             return
         partida.setdefault("ja_clicou", []).append(interaction.user.id)
-        if comparar_resposta(self.correta, self.resposta):
+        if self.resposta == self.correta:
             pontos = partida.setdefault("pontos", {})
             pontos[interaction.user.id] = pontos.get(interaction.user.id,0)+1
             await interaction.response.send_message(f"✅ {interaction.user.name} acertou! Total de pontos: {pontos[interaction.user.id]}")
         else:
-            await interaction.response.send_message(f"❌ {interaction.user.name} errou!", ephemeral=True)
+            await interaction.response.send_message(f"❌ Você errou! ({interaction.user.name})", ephemeral=False)
 
-# ----------- ENVIAR PERGUNTA COM TIMER VISUAL -----------
+# ----------- ENVIAR PERGUNTA COM TIMER -----------
 async def enviar_pergunta(interaction: Interaction, guild_id):
     partida = partidas_ativas[guild_id]
     idx = partida["index"]
@@ -85,37 +77,18 @@ async def enviar_pergunta(interaction: Interaction, guild_id):
     
     partida["ja_clicou"] = []
 
-    acertou = False
+    view = MultipleChoiceView(pergunta, guild_id)
+    await interaction.channel.send(embed=embed, view=view)
 
-    if partida.get("multipla", True) and "opcoes" in pergunta:
-        view = MultipleChoiceView(pergunta, guild_id)
-        await interaction.channel.send(embed=embed, view=view)
-        # timer 20s
-        for t in range(20,0,-5):
-            await asyncio.sleep(5)
-            # checar se alguém acertou
-            for user_id in partida.get("pontos", {}):
-                if partida["pontos"][user_id] > 0:
-                    acertou = True
-                    break
-            if acertou:
-                break
-        if not acertou:
-            await interaction.channel.send(f"❌ Ninguém acertou! A resposta era: **{pergunta['resposta']}**")
-    else:
-        msg = await interaction.channel.send(embed=embed)
-        for t in range(20,0,-5):
-            await interaction.channel.send(f"⏱ {t}s restantes")
-            await asyncio.sleep(5)
-            # checar se alguém acertou
-            for user_id in partida.get("pontos", {}):
-                if partida["pontos"][user_id] > 0:
-                    acertou = True
-                    break
-            if acertou:
-                break
-        if not acertou:
-            await interaction.channel.send(f"❌ Ninguém acertou! A resposta era: **{pergunta['resposta']}**")
+    # Timer visual
+    for t in range(20,0,-5):
+        await asyncio.sleep(5)
+        await interaction.channel.send(f"⏱ {t}s restantes")
+
+    # Se ninguém acertou
+    acertou = any(pontos > 0 for pontos in partida.get("pontos", {}).values())
+    if not acertou:
+        await interaction.channel.send(f"❌ Ninguém acertou! A resposta era: **{pergunta['resposta']}**")
 
 # ----------- FINALIZAR PARTIDA COM TOP 3 -----------
 async def finalizar_partida(interaction: Interaction, guild_id):
@@ -153,22 +126,8 @@ async def perfil(interaction: Interaction):
     embed = discord.Embed(title=f"Perfil de {interaction.user.name}", description=f"Pontos acumulados: {user_pts}", color=discord.Color.green())
     await interaction.response.send_message(embed=embed)
 
-# ----------- INICIAR COM DROPDOWNS -----------
-class ModoSelect(ui.Select):
-    def __init__(self, guild_id):
-        options = [
-            discord.SelectOption(label="Normal", description="Responda digitando a resposta"),
-            discord.SelectOption(label="Múltipla Escolha", description="Responda clicando nos botões A/B/C/D")
-        ]
-        self.guild_id = guild_id
-        super().__init__(placeholder="Escolha o modo de jogo...", options=options, min_values=1, max_values=1)
-    
-    async def callback(self, interaction: Interaction):
-        modo = self.values[0]
-        partidas_ativas[self.guild_id]["multipla"] = True if modo == "Múltipla Escolha" else False
-        await interaction.response.send_message(f"✅ Modo **{modo}** selecionado! Use /next para começar a jogar.")
-
-@bot.tree.command(name="iniciar", description="Inicia uma partida em determinado tema")
+# ----------- INICIAR COM DROPDOWN -----------
+@bot.tree.command(name="iniciar", description="Inicia uma partida em determinado tema (Múltipla Escolha)")
 async def iniciar(interaction: Interaction):
     class TemaSelect(ui.Select):
         def __init__(self):
@@ -181,11 +140,8 @@ async def iniciar(interaction: Interaction):
             perguntas = temas_data[tema][list(temas_data[tema].keys())[0]]
             perguntas_copia = perguntas.copy()
             random.shuffle(perguntas_copia)
-            partidas_ativas[guild_id] = {"tema": tema, "perguntas": perguntas_copia, "index":0, "auto":False, "pontos":{}, "multipla":True, "ja_clicou":[]}
-
-            view_modo = ui.View()
-            view_modo.add_item(ModoSelect(guild_id))
-            await interaction.response.send_message(f"🎮 Tema **{tema}** selecionado! Agora escolha o modo:", view=view_modo)
+            partidas_ativas[guild_id] = {"tema": tema, "perguntas": perguntas_copia, "index":0, "auto":False, "pontos":{}, "ja_clicou":[]}
+            await interaction.response.send_message(f"🎮 Tema **{tema}** selecionado! Use /next para começar a jogar.")
 
     view = ui.View()
     view.add_item(TemaSelect())
@@ -232,23 +188,6 @@ async def stop(interaction: Interaction):
         await interaction.response.send_message("🛑 Partida pausada!")
     else:
         await interaction.response.send_message("❌ Nenhuma partida ativa.")
-
-# ----------- RESPOSTAS TEXTUAIS (modo normal) -----------
-@bot.event
-async def on_message(message):
-    if message.author.bot:
-        return
-    guild_id = message.guild.id
-    if guild_id in partidas_ativas:
-        partida = partidas_ativas[guild_id]
-        if not partida.get("multipla", True):
-            idx = partida["index"]-1
-            if idx<0: return
-            pergunta = partida["perguntas"][idx]
-            if comparar_resposta(pergunta["resposta"], message.content):
-                pontos = partida.setdefault("pontos", {})
-                pontos[message.author.id] = pontos.get(message.author.id,0)+1
-                await message.channel.send(f"✅ {message.author.name} acertou! Total de pontos: {pontos[message.author.id]}")
 
 # ----------- RUN BOT -----------
 TOKEN = os.environ.get("DISCORD_TOKEN")
