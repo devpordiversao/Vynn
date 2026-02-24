@@ -30,14 +30,14 @@ for key, file in temas_files.items():
 # ----------- PARTIDAS ATIVAS -----------
 partidas_ativas = {}  # guild_id: {tema, perguntas, index, auto, pontos, multipla, ja_clicou}
 
-# ----------- FUNÇÃO COMPARAR RESPOSTA -----------
+# ----------- COMPARAÇÃO SIMILARIDADE -----------
 def comparar_resposta(correta, resposta_usuario):
     correta = correta.lower().strip()
     resposta_usuario = resposta_usuario.lower().strip()
     ratio = difflib.SequenceMatcher(None, correta, resposta_usuario).ratio()
     return ratio >= 0.8  # 80% de similaridade aceita
 
-# ----------- VIEW MÚLTIPLA ESCOLHA -----------
+# ----------- BOTÕES MÚLTIPLA ESCOLHA -----------
 class MultipleChoiceView(ui.View):
     def __init__(self, pergunta, guild_id):
         super().__init__(timeout=20)
@@ -85,15 +85,37 @@ async def enviar_pergunta(interaction: Interaction, guild_id):
     
     partida["ja_clicou"] = []
 
+    acertou = False
+
     if partida.get("multipla", True) and "opcoes" in pergunta:
         view = MultipleChoiceView(pergunta, guild_id)
         await interaction.channel.send(embed=embed, view=view)
+        # timer 20s
+        for t in range(20,0,-5):
+            await asyncio.sleep(5)
+            # checar se alguém acertou
+            for user_id in partida.get("pontos", {}):
+                if partida["pontos"][user_id] > 0:
+                    acertou = True
+                    break
+            if acertou:
+                break
+        if not acertou:
+            await interaction.channel.send(f"❌ Ninguém acertou! A resposta era: **{pergunta['resposta']}**")
     else:
         msg = await interaction.channel.send(embed=embed)
         for t in range(20,0,-5):
             await interaction.channel.send(f"⏱ {t}s restantes")
             await asyncio.sleep(5)
-        await interaction.channel.send("⏰ Tempo esgotado! Ninguém acertou ou acertou tarde demais.")
+            # checar se alguém acertou
+            for user_id in partida.get("pontos", {}):
+                if partida["pontos"][user_id] > 0:
+                    acertou = True
+                    break
+            if acertou:
+                break
+        if not acertou:
+            await interaction.channel.send(f"❌ Ninguém acertou! A resposta era: **{pergunta['resposta']}**")
 
 # ----------- FINALIZAR PARTIDA COM TOP 3 -----------
 async def finalizar_partida(interaction: Interaction, guild_id):
@@ -131,7 +153,7 @@ async def perfil(interaction: Interaction):
     embed = discord.Embed(title=f"Perfil de {interaction.user.name}", description=f"Pontos acumulados: {user_pts}", color=discord.Color.green())
     await interaction.response.send_message(embed=embed)
 
-# ----------- INICIAR COM DOIS DROPDOWNS -----------
+# ----------- INICIAR COM DROPDOWNS -----------
 class ModoSelect(ui.Select):
     def __init__(self, guild_id):
         options = [
