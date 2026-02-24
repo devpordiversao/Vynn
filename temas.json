@@ -1,15 +1,65 @@
 {
   "naruto": [
     {
-      "pergunta": "Quem é o pai de Naruto?",
+      "pergunta": "Quem é o pai de Naruto Uzumaki?",
       "resposta": "A",
       "opcoes": {
-        "A": "Minato",
+        "A": "Minato Namikaze",
         "B": "Jiraiya",
-        "C": "Hiruzen",
-        "D": "Kakashi"
+        "C": "Kakashi Hatake",
+        "D": "Iruka Umino"
       },
       "imagem": "https://i.imgur.com/3GvwNBf.png"
+    },
+    {
+      "pergunta": "Qual é o nome da raposa de nove caudas?",
+      "resposta": "B",
+      "opcoes": {
+        "A": "Shukaku",
+        "B": "Kurama",
+        "C": "Matatabi",
+        "D": "Isobu"
+      },
+      "imagem": "https://i.imgur.com/3GvwNBf.png"
+    },
+    {
+      "pergunta": "Quem foi o primeiro Hokage?",
+      "resposta": "C",
+      "opcoes": {
+        "A": "Tobirama",
+        "B": "Minato",
+        "C": "Hashirama",
+        "D": "Hiruzen"
+      },
+      "imagem": "https://i.imgur.com/3GvwNBf.png"
+    }
+  ],
+
+  "boku_no_hero": [
+    {
+      "pergunta": "Qual é o nome verdadeiro do Deku?",
+      "resposta": "A",
+      "opcoes": {
+        "A": "Izuku Midoriya",
+        "B": "Bakugo Katsuki",
+        "C": "Shoto Todoroki",
+        "D": "Tenya Iida"
+      },
+      "imagem": "https://i.imgur.com/tv6GQ0K.png"
+    }
+  ],
+
+  "one_piece": [
+    {
+      "pergunta": "Quem é o capitão dos Chapéus de Palha?",
+      "resposta": "C",
+      "opcoes": {
+        "A": "Zoro",
+        "B": "Sanji",
+        "C": "Luffy",
+        "D": "Ace"
+      },
+      "imagem": "https://i.imgur.com/2yaf2wb.png"
     }
   ]
 }
