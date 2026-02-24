@@ -1,194 +1,241 @@
 import discord
 from discord.ext import commands, tasks
-from discord import app_commands, Interaction, ui
-import json
-import random
-import asyncio
-import os
+from discord import app_commands
+import random, asyncio, datetime
 
-intents = discord.Intents.default()
-intents.messages = True
-intents.message_content = True
-intents.members = True
-
+intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="/", intents=intents)
 
-# ----------- CARREGAR TEMAS -----------
-temas_files = {
-    "Naruto": "temas.json",
-    "Escola": "temas2.json",
-    "Futebol": "temas3.json",
-    "Curiosidades": "temas4.json"
-}
+ADMIN_ID = 1327679436128129159  # Seu ID para logs privados
 
-temas_data = {}
-for key, file in temas_files.items():
-    with open(file, "r", encoding="utf-8") as f:
-        temas_data[key] = json.load(f)
+# ---------------------------
+# Leaderboard
+# ---------------------------
+leaderboard = {}  # {user_id: pontos}
 
-# ----------- PARTIDAS ATIVAS -----------
-partidas_ativas = {}  # guild_id: {tema, perguntas, index, auto, pontos, ja_clicou}
+def add_pontos(user_id, pontos=1):
+    leaderboard[user_id] = leaderboard.get(user_id, 0) + pontos
 
-# ----------- BOTÕES MÚLTIPLA ESCOLHA -----------
-class MultipleChoiceView(ui.View):
-    def __init__(self, pergunta, guild_id):
+# ---------------------------
+# Logs Privados e Servidor
+# ---------------------------
+async def enviar_log_privado(guild, usuario, acao, motivo=None):
+    admin = await bot.fetch_user(ADMIN_ID)
+    embed = discord.Embed(
+        title="Log de Moderação",
+        color=0xFF0000,
+        timestamp=datetime.datetime.utcnow()
+    )
+    embed.add_field(name="Servidor", value=guild.name, inline=False)
+    embed.add_field(name="Usuário", value=str(usuario), inline=False)
+    embed.add_field(name="Ação", value=acao, inline=False)
+    if motivo: embed.add_field(name="Motivo", value=motivo, inline=False)
+    await admin.send(embed=embed)
+
+async def enviar_log_servidor(guild, usuario, acao, motivo=None):
+    log_channel = discord.utils.get(guild.text_channels, name="logs")
+    if log_channel:
+        embed = discord.Embed(
+            title="Log de Moderação",
+            color=0xFF0000,
+            timestamp=datetime.datetime.utcnow()
+        )
+        embed.add_field(name="Usuário", value=str(usuario), inline=False)
+        embed.add_field(name="Ação", value=acao, inline=False)
+        if motivo: embed.add_field(name="Motivo", value=motivo, inline=False)
+        await log_channel.send(embed=embed)
+
+# ---------------------------
+# Minigames
+# ---------------------------
+
+# Pedra, Papel, Tesoura
+class PPTView(discord.ui.View):
+    def __init__(self, bot_escolha):
         super().__init__(timeout=20)
-        self.pergunta = pergunta
-        self.guild_id = guild_id
-        self.add_buttons()
-    
-    def add_buttons(self):
-        for letra, resposta in self.pergunta.get("opcoes", {}).items():
-            self.add_item(MCButton(letra, resposta, self.pergunta["resposta"], self.guild_id))
-            
-class MCButton(ui.Button):
-    def __init__(self, letra, resposta, correta, guild_id):
-        super().__init__(label=f"{letra}. {resposta}", style=discord.ButtonStyle.primary)
-        self.letra = letra
-        self.resposta = resposta
-        self.correta = correta
-        self.guild_id = guild_id
+        self.bot_escolha = bot_escolha
+        self.clicked_users = []
 
-    async def callback(self, interaction: Interaction):
-        partida = partidas_ativas[self.guild_id]
-        if interaction.user.id in partida.get("ja_clicou", []):
-            await interaction.response.send_message("❌ Você já respondeu!", ephemeral=True)
+    async def resultado(self, interaction, escolha_user):
+        if interaction.user.id in self.clicked_users:
+            await interaction.response.send_message("Você já clicou!", ephemeral=True)
             return
-        partida.setdefault("ja_clicou", []).append(interaction.user.id)
-        if self.resposta == self.correta:
-            pontos = partida.setdefault("pontos", {})
-            pontos[interaction.user.id] = pontos.get(interaction.user.id,0)+1
-            await interaction.response.send_message(f"✅ {interaction.user.name} acertou! Total de pontos: {pontos[interaction.user.id]}")
+        self.clicked_users.append(interaction.user.id)
+        if escolha_user == self.bot_escolha:
+            resultado = "Empate!"
+        elif (escolha_user=="Pedra" and self.bot_escolha=="Tesoura") or \
+             (escolha_user=="Papel" and self.bot_escolha=="Pedra") or \
+             (escolha_user=="Tesoura" and self.bot_escolha=="Papel"):
+            resultado = "Você ganhou!"
+            add_pontos(interaction.user.id)
         else:
-            await interaction.response.send_message(f"❌ Você errou! ({interaction.user.name})", ephemeral=False)
+            resultado = "Você perdeu!"
+        await interaction.response.send_message(
+            f"Você: **{escolha_user}**\nBot: **{self.bot_escolha}**\n**{resultado}**"
+        )
 
-# ----------- ENVIAR PERGUNTA COM TIMER -----------
-async def enviar_pergunta(interaction: Interaction, guild_id):
-    partida = partidas_ativas[guild_id]
-    idx = partida["index"]
-    if idx >= len(partida["perguntas"]):
-        await finalizar_partida(interaction, guild_id)
-        return
-    pergunta = partida["perguntas"][idx]
+    @discord.ui.button(label="Pedra", style=discord.ButtonStyle.primary)
+    async def pedra(self, button, interaction):
+        await self.resultado(interaction, "Pedra")
+    @discord.ui.button(label="Papel", style=discord.ButtonStyle.success)
+    async def papel(self, button, interaction):
+        await self.resultado(interaction, "Papel")
+    @discord.ui.button(label="Tesoura", style=discord.ButtonStyle.danger)
+    async def tesoura(self, button, interaction):
+        await self.resultado(interaction, "Tesoura")
 
-    embed = discord.Embed(title=f"Pergunta {idx+1}", description=pergunta["pergunta"], color=discord.Color.gold())
-    if "imagem" in pergunta and pergunta["imagem"]:
-        embed.set_image(url=pergunta["imagem"])
-    
-    partida["ja_clicou"] = []
+@bot.slash_command(name="ppt", description="Jogue Pedra, Papel ou Tesoura")
+async def ppt(ctx):
+    escolhas = ["Pedra","Papel","Tesoura"]
+    bot_escolha = random.choice(escolhas)
+    await ctx.respond(embed=discord.Embed(title="Pedra, Papel ou Tesoura", description="Escolha abaixo:", color=0xFFD700),
+                      view=PPTView(bot_escolha))
 
-    view = MultipleChoiceView(pergunta, guild_id)
-    await interaction.channel.send(embed=embed, view=view)
+# Moeda
+class MoedaView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=15)
+        self.clicked_users = []
 
-    # Timer visual
-    for t in range(20,0,-5):
-        await asyncio.sleep(5)
-        await interaction.channel.send(f"⏱ {t}s restantes")
+    async def resultado(self, interaction, escolha_user):
+        if interaction.user.id in self.clicked_users:
+            await interaction.response.send_message("Você já clicou!", ephemeral=True)
+            return
+        self.clicked_users.append(interaction.user.id)
+        resultado = random.choice(["Cara","Coroa"])
+        msg = "Acertou!" if escolha_user==resultado else "Errou!"
+        if msg=="Acertou!": add_pontos(interaction.user.id)
+        await interaction.response.send_message(f"Você: **{escolha_user}**\nResultado: **{resultado}**\n**{msg}**")
 
-    # Se ninguém acertou
-    acertou = any(pontos > 0 for pontos in partida.get("pontos", {}).values())
-    if not acertou:
-        await interaction.channel.send(f"❌ Ninguém acertou! A resposta era: **{pergunta['resposta']}**")
+    @discord.ui.button(label="Cara", style=discord.ButtonStyle.primary)
+    async def cara(self, button, interaction):
+        await self.resultado(interaction, "Cara")
+    @discord.ui.button(label="Coroa", style=discord.ButtonStyle.success)
+    async def coroa(self, button, interaction):
+        await self.resultado(interaction, "Coroa")
 
-# ----------- FINALIZAR PARTIDA COM TOP 3 -----------
-async def finalizar_partida(interaction: Interaction, guild_id):
-    partida = partidas_ativas[guild_id]
-    pontos = partida.get("pontos", {})
-    if not pontos:
-        await interaction.channel.send("🔹 Partida encerrada! Ninguém marcou pontos.")
+@bot.slash_command(name="moeda", description="Jogue Cara ou Coroa")
+async def moeda(ctx):
+    await ctx.respond(embed=discord.Embed(title="Cara ou Coroa", description="Clique abaixo:", color=0x00FFFF),
+                      view=MoedaView())
+
+# Dado
+class DadoView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=15)
+        self.clicked_users = []
+
+    async def resultado(self, interaction):
+        if interaction.user.id in self.clicked_users:
+            await interaction.response.send_message("Você já clicou!", ephemeral=True)
+            return
+        self.clicked_users.append(interaction.user.id)
+        valor = random.randint(1,6)
+        add_pontos(interaction.user.id, valor)
+        await interaction.response.send_message(f"{interaction.user.mention} tirou: **{valor}**")
+
+@bot.slash_command(name="dado", description="Rola um dado de 1 a 6")
+async def dado(ctx):
+    await ctx.respond(embed=discord.Embed(title="Rolar Dado", description="Clique abaixo para rolar!", color=0xFF8C00),
+                      view=DadoView())
+
+# ---------------------------
+# Emoji Battle
+# ---------------------------
+class EmojiBattleView(discord.ui.View):
+    def __init__(self, bot_escolha, regra):
+        super().__init__(timeout=20)
+        self.bot_escolha = bot_escolha
+        self.regra = regra
+        self.clicked_users = []
+
+    async def resultado(self, interaction, escolha_user):
+        if interaction.user.id in self.clicked_users:
+            await interaction.response.send_message("Você já clicou!", ephemeral=True)
+            return
+        self.clicked_users.append(interaction.user.id)
+        if escolha_user == self.bot_escolha:
+            msg = "Empate!"
+        elif self.regra[escolha_user] == self.bot_escolha:
+            msg = "Você ganhou!"
+            add_pontos(interaction.user.id)
+        else:
+            msg = "Você perdeu!"
+        await interaction.response.send_message(f"Bot: {self.bot_escolha}\nVocê: {escolha_user}\n**{msg}**")
+
+@bot.slash_command(name="emojibattle", description="Batalha de Emojis!")
+async def emojibattle(ctx):
+    escolhas = ["🐍","🐇","🐢"]
+    regra = {"🐍":"🐇","🐇":"🐢","🐢":"🐍"}
+    bot_escolha = random.choice(escolhas)
+    view = EmojiBattleView(bot_escolha, regra)
+    for emoji in escolhas:
+        view.add_item(discord.ui.Button(label=emoji, style=discord.ButtonStyle.primary, custom_id=emoji))
+    await ctx.respond(embed=discord.Embed(title="Emoji Battle", description="Escolha seu emoji!", color=0xFF69B4), view=view)
+
+# ---------------------------
+# Comandos de Moderação
+# ---------------------------
+@bot.slash_command(name="ban", description="Banir usuário com logs")
+@commands.has_permissions(ban_members=True)
+async def ban(ctx, usuario: discord.Member, motivo: str="Sem motivo"):
+    await usuario.ban(reason=motivo)
+    await ctx.respond(f"{usuario} banido! 🛑")
+    await enviar_log_privado(ctx.guild, usuario, "BAN", motivo)
+    await enviar_log_servidor(ctx.guild, usuario, "BAN", motivo)
+
+@bot.slash_command(name="kick", description="Expulsar usuário com logs")
+@commands.has_permissions(kick_members=True)
+async def kick(ctx, usuario: discord.Member, motivo: str="Sem motivo"):
+    await usuario.kick(reason=motivo)
+    await ctx.respond(f"{usuario} expulso! 👢")
+    await enviar_log_privado(ctx.guild, usuario, "KICK", motivo)
+    await enviar_log_servidor(ctx.guild, usuario, "KICK", motivo)
+
+@bot.slash_command(name="mute", description="Mutar usuário")
+@commands.has_permissions(manage_roles=True)
+async def mute(ctx, usuario: discord.Member, tempo: str="10m"):
+    role = discord.utils.get(ctx.guild.roles, name="Muted")
+    if not role:
+        role = await ctx.guild.create_role(name="Muted")
+        for channel in ctx.guild.channels:
+            await channel.set_permissions(role, send_messages=False, add_reactions=False)
+    await usuario.add_roles(role)
+    await ctx.respond(f"{usuario} mutado por {tempo} ⏱️")
+    await enviar_log_privado(ctx.guild, usuario, "MUTE", tempo)
+    await enviar_log_servidor(ctx.guild, usuario, "MUTE", tempo)
+    multipliers = {"s":1,"m":60,"h":3600,"d":86400}
+    t = int(tempo[:-1]) * multipliers[tempo[-1]]
+    await asyncio.sleep(t)
+    if role in usuario.roles:
+        await usuario.remove_roles(role)
+        await ctx.channel.send(f"{usuario} foi desmutado ✅")
+
+@bot.slash_command(name="limpar", description="Apaga mensagens")
+@commands.has_permissions(manage_messages=True)
+async def limpar(ctx, quantidade: int=10, usuario: discord.Member=None):
+    if usuario:
+        msgs = [m async for m in ctx.channel.history(limit=100) if m.author==usuario]
+        await ctx.channel.delete_messages(msgs[:quantidade])
+        await ctx.respond(f"{quantidade} mensagens de {usuario} apagadas!")
     else:
-        ranking = sorted(pontos.items(), key=lambda x: x[1], reverse=True)[:3]
-        desc = ""
-        emojis = ["🥇","🥈","🥉"]
-        for i, (user_id, pts) in enumerate(ranking):
-            user = interaction.guild.get_member(user_id)
-            desc += f"{emojis[i]} {user.name if user else 'Desconhecido'} — {pts} pontos\n"
-        embed = discord.Embed(title="🏆 Top 3 da partida", description=desc, color=discord.Color.purple())
-        await interaction.channel.send(embed=embed)
-    del partidas_ativas[guild_id]
+        await ctx.channel.purge(limit=quantidade)
+        await ctx.respond(f"{quantidade} mensagens apagadas!")
 
-# ----------- COMANDOS -----------
-@bot.tree.command(name="temas", description="Mostra todos os temas disponíveis")
-async def temas(interaction: Interaction):
-    texto = ""
-    for tema in temas_data.keys():
-        texto += f"- {tema}\n"
-    embed = discord.Embed(title="Temas Disponíveis", description=texto, color=discord.Color.blue())
-    await interaction.response.send_message(embed=embed)
+# ---------------------------
+# Perfil e Temas
+# ---------------------------
+@bot.slash_command(name="perfil", description="Mostra estatísticas do usuário")
+async def perfil(ctx, usuario: discord.Member=None):
+    usuario = usuario or ctx.author
+    pontos = leaderboard.get(usuario.id,0)
+    await ctx.respond(embed=discord.Embed(title=f"Perfil de {usuario}", description=f"Pontos: {pontos}", color=0x00FF00))
 
-@bot.tree.command(name="perfil", description="Mostra seu perfil e pontos")
-async def perfil(interaction: Interaction):
-    pontos_totais = {}
-    for partida in partidas_ativas.values():
-        for user_id, pts in partida.get("pontos", {}).items():
-            pontos_totais[user_id] = pontos_totais.get(user_id,0)+pts
-    user_pts = pontos_totais.get(interaction.user.id, 0)
-    embed = discord.Embed(title=f"Perfil de {interaction.user.name}", description=f"Pontos acumulados: {user_pts}", color=discord.Color.green())
-    await interaction.response.send_message(embed=embed)
+@bot.slash_command(name="temas", description="Lista todos os temas disponíveis")
+async def temas(ctx):
+    await ctx.respond("Temas disponíveis: Animes, História, Geografia, Futebol, Matemática, Curiosidades")
 
-# ----------- INICIAR COM DROPDOWN -----------
-@bot.tree.command(name="iniciar", description="Inicia uma partida em determinado tema (Múltipla Escolha)")
-async def iniciar(interaction: Interaction):
-    class TemaSelect(ui.Select):
-        def __init__(self):
-            options = [discord.SelectOption(label=k, description=f"Jogar tema {k}") for k in temas_data.keys()]
-            super().__init__(placeholder="Escolha um tema...", options=options, min_values=1, max_values=1)
-        
-        async def callback(self, interaction: Interaction):
-            tema = self.values[0]
-            guild_id = interaction.guild.id
-            perguntas = temas_data[tema][list(temas_data[tema].keys())[0]]
-            perguntas_copia = perguntas.copy()
-            random.shuffle(perguntas_copia)
-            partidas_ativas[guild_id] = {"tema": tema, "perguntas": perguntas_copia, "index":0, "auto":False, "pontos":{}, "ja_clicou":[]}
-            await interaction.response.send_message(f"🎮 Tema **{tema}** selecionado! Use /next para começar a jogar.")
-
-    view = ui.View()
-    view.add_item(TemaSelect())
-    await interaction.response.send_message("Selecione o tema que deseja jogar:", view=view)
-
-# ----------- NEXT -----------
-@bot.tree.command(name="next", description="Avança para a próxima pergunta")
-async def next(interaction: Interaction):
-    guild_id = interaction.guild.id
-    if guild_id not in partidas_ativas:
-        await interaction.response.send_message("❌ Nenhuma partida ativa neste servidor.")
-        return
-    partida = partidas_ativas[guild_id]
-    await enviar_pergunta(interaction, guild_id)
-    partida["index"] +=1
-
-# ----------- AUTO -----------
-@bot.tree.command(name="auto", description="Inicia a partida automática")
-async def auto(interaction: Interaction):
-    guild_id = interaction.guild.id
-    if guild_id not in partidas_ativas:
-        await interaction.response.send_message("❌ Nenhuma partida ativa. Use /iniciar")
-        return
-    partidas_ativas[guild_id]["auto"] = True
-    await interaction.response.send_message("🤖 Modo automático iniciado! Perguntas automáticas a cada 25s. Use /stop para parar.")
-    
-    async def auto_loop():
-        while partidas_ativas.get(guild_id, {}).get("auto", False):
-            await enviar_pergunta(interaction, guild_id)
-            partidas_ativas[guild_id]["index"] +=1
-            if partidas_ativas[guild_id]["index"] >= len(partidas_ativas[guild_id]["perguntas"]):
-                await finalizar_partida(interaction, guild_id)
-                break
-            await asyncio.sleep(25)
-
-    bot.loop.create_task(auto_loop())
-
-# ----------- STOP -----------
-@bot.tree.command(name="stop", description="Para a partida automática")
-async def stop(interaction: Interaction):
-    guild_id = interaction.guild.id
-    if guild_id in partidas_ativas:
-        partidas_ativas[guild_id]["auto"] = False
-        await interaction.response.send_message("🛑 Partida pausada!")
-    else:
-        await interaction.response.send_message("❌ Nenhuma partida ativa.")
-
-# ----------- RUN BOT -----------
-TOKEN = os.environ.get("DISCORD_TOKEN")
-bot.run(TOKEN)
+# ---------------------------
+# Rodar Bot
+# ---------------------------
+bot.run("SEU_DISCORD_TOKEN_AQUI")
