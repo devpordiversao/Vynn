@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands, tasks
-from discord import app_commands
 import random, asyncio, datetime
 
 intents = discord.Intents.all()
@@ -46,10 +45,95 @@ async def enviar_log_servidor(guild, usuario, acao, motivo=None):
         await log_channel.send(embed=embed)
 
 # ---------------------------
-# Minigames
+# Bot Ready
 # ---------------------------
+@bot.event
+async def on_ready():
+    await bot.tree.sync()
+    print(f"Bot online! {bot.user}")
 
-# Pedra, Papel, Tesoura
+# ---------------------------
+# /perfil
+# ---------------------------
+@bot.tree.command(name="perfil", description="Mostra estatísticas do usuário")
+async def perfil(interaction: discord.Interaction, usuario: discord.Member=None):
+    usuario = usuario or interaction.user
+    pontos = leaderboard.get(usuario.id, 0)
+    await interaction.response.send_message(
+        embed=discord.Embed(title=f"Perfil de {usuario}", description=f"Pontos: {pontos}", color=0x00FF00)
+    )
+
+# ---------------------------
+# /temas
+# ---------------------------
+@bot.tree.command(name="temas", description="Lista todos os temas disponíveis")
+async def temas(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        "Temas disponíveis: Animes, História, Geografia, Futebol, Matemática, Curiosidades"
+    )
+
+# ---------------------------
+# /ban
+# ---------------------------
+@bot.tree.command(name="ban", description="Banir usuário com logs")
+@commands.has_permissions(ban_members=True)
+async def ban(interaction: discord.Interaction, usuario: discord.Member, motivo: str="Sem motivo"):
+    await usuario.ban(reason=motivo)
+    await interaction.response.send_message(f"{usuario} banido! 🛑")
+    await enviar_log_privado(interaction.guild, usuario, "BAN", motivo)
+    await enviar_log_servidor(interaction.guild, usuario, "BAN", motivo)
+
+# ---------------------------
+# /kick
+# ---------------------------
+@bot.tree.command(name="kick", description="Expulsar usuário com logs")
+@commands.has_permissions(kick_members=True)
+async def kick(interaction: discord.Interaction, usuario: discord.Member, motivo: str="Sem motivo"):
+    await usuario.kick(reason=motivo)
+    await interaction.response.send_message(f"{usuario} expulso! 👢")
+    await enviar_log_privado(interaction.guild, usuario, "KICK", motivo)
+    await enviar_log_servidor(interaction.guild, usuario, "KICK", motivo)
+
+# ---------------------------
+# /mute
+# ---------------------------
+@bot.tree.command(name="mute", description="Mutar usuário por tempo determinado")
+@commands.has_permissions(manage_roles=True)
+async def mute(interaction: discord.Interaction, usuario: discord.Member, tempo: str="10m"):
+    role = discord.utils.get(interaction.guild.roles, name="Muted")
+    if not role:
+        role = await interaction.guild.create_role(name="Muted")
+        for channel in interaction.guild.channels:
+            await channel.set_permissions(role, send_messages=False, add_reactions=False)
+    await usuario.add_roles(role)
+    await interaction.response.send_message(f"{usuario} mutado por {tempo} ⏱️")
+    await enviar_log_privado(interaction.guild, usuario, "MUTE", tempo)
+    await enviar_log_servidor(interaction.guild, usuario, "MUTE", tempo)
+
+    multipliers = {"s":1,"m":60,"h":3600,"d":86400}
+    t = int(tempo[:-1]) * multipliers[tempo[-1]]
+    await asyncio.sleep(t)
+    if role in usuario.roles:
+        await usuario.remove_roles(role)
+        await interaction.channel.send(f"{usuario} foi desmutado ✅")
+
+# ---------------------------
+# /limpar
+# ---------------------------
+@bot.tree.command(name="limpar", description="Apaga mensagens")
+@commands.has_permissions(manage_messages=True)
+async def limpar(interaction: discord.Interaction, quantidade: int=10, usuario: discord.Member=None):
+    if usuario:
+        msgs = [m async for m in interaction.channel.history(limit=100) if m.author==usuario]
+        await interaction.channel.delete_messages(msgs[:quantidade])
+        await interaction.response.send_message(f"{quantidade} mensagens de {usuario} apagadas!")
+    else:
+        await interaction.channel.purge(limit=quantidade)
+        await interaction.response.send_message(f"{quantidade} mensagens apagadas!")
+
+# ---------------------------
+# Minigames: Exemplo Pedra-Papel-Tesoura
+# ---------------------------
 class PPTView(discord.ui.View):
     def __init__(self, bot_escolha):
         super().__init__(timeout=20)
@@ -84,158 +168,15 @@ class PPTView(discord.ui.View):
     async def tesoura(self, button, interaction):
         await self.resultado(interaction, "Tesoura")
 
-@bot.slash_command(name="ppt", description="Jogue Pedra, Papel ou Tesoura")
-async def ppt(ctx):
+@bot.tree.command(name="ppt", description="Jogue Pedra, Papel ou Tesoura")
+async def ppt(interaction: discord.Interaction):
     escolhas = ["Pedra","Papel","Tesoura"]
     bot_escolha = random.choice(escolhas)
-    await ctx.respond(embed=discord.Embed(title="Pedra, Papel ou Tesoura", description="Escolha abaixo:", color=0xFFD700),
-                      view=PPTView(bot_escolha))
-
-# Moeda
-class MoedaView(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=15)
-        self.clicked_users = []
-
-    async def resultado(self, interaction, escolha_user):
-        if interaction.user.id in self.clicked_users:
-            await interaction.response.send_message("Você já clicou!", ephemeral=True)
-            return
-        self.clicked_users.append(interaction.user.id)
-        resultado = random.choice(["Cara","Coroa"])
-        msg = "Acertou!" if escolha_user==resultado else "Errou!"
-        if msg=="Acertou!": add_pontos(interaction.user.id)
-        await interaction.response.send_message(f"Você: **{escolha_user}**\nResultado: **{resultado}**\n**{msg}**")
-
-    @discord.ui.button(label="Cara", style=discord.ButtonStyle.primary)
-    async def cara(self, button, interaction):
-        await self.resultado(interaction, "Cara")
-    @discord.ui.button(label="Coroa", style=discord.ButtonStyle.success)
-    async def coroa(self, button, interaction):
-        await self.resultado(interaction, "Coroa")
-
-@bot.slash_command(name="moeda", description="Jogue Cara ou Coroa")
-async def moeda(ctx):
-    await ctx.respond(embed=discord.Embed(title="Cara ou Coroa", description="Clique abaixo:", color=0x00FFFF),
-                      view=MoedaView())
-
-# Dado
-class DadoView(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=15)
-        self.clicked_users = []
-
-    async def resultado(self, interaction):
-        if interaction.user.id in self.clicked_users:
-            await interaction.response.send_message("Você já clicou!", ephemeral=True)
-            return
-        self.clicked_users.append(interaction.user.id)
-        valor = random.randint(1,6)
-        add_pontos(interaction.user.id, valor)
-        await interaction.response.send_message(f"{interaction.user.mention} tirou: **{valor}**")
-
-@bot.slash_command(name="dado", description="Rola um dado de 1 a 6")
-async def dado(ctx):
-    await ctx.respond(embed=discord.Embed(title="Rolar Dado", description="Clique abaixo para rolar!", color=0xFF8C00),
-                      view=DadoView())
-
-# ---------------------------
-# Emoji Battle
-# ---------------------------
-class EmojiBattleView(discord.ui.View):
-    def __init__(self, bot_escolha, regra):
-        super().__init__(timeout=20)
-        self.bot_escolha = bot_escolha
-        self.regra = regra
-        self.clicked_users = []
-
-    async def resultado(self, interaction, escolha_user):
-        if interaction.user.id in self.clicked_users:
-            await interaction.response.send_message("Você já clicou!", ephemeral=True)
-            return
-        self.clicked_users.append(interaction.user.id)
-        if escolha_user == self.bot_escolha:
-            msg = "Empate!"
-        elif self.regra[escolha_user] == self.bot_escolha:
-            msg = "Você ganhou!"
-            add_pontos(interaction.user.id)
-        else:
-            msg = "Você perdeu!"
-        await interaction.response.send_message(f"Bot: {self.bot_escolha}\nVocê: {escolha_user}\n**{msg}**")
-
-@bot.slash_command(name="emojibattle", description="Batalha de Emojis!")
-async def emojibattle(ctx):
-    escolhas = ["🐍","🐇","🐢"]
-    regra = {"🐍":"🐇","🐇":"🐢","🐢":"🐍"}
-    bot_escolha = random.choice(escolhas)
-    view = EmojiBattleView(bot_escolha, regra)
-    for emoji in escolhas:
-        view.add_item(discord.ui.Button(label=emoji, style=discord.ButtonStyle.primary, custom_id=emoji))
-    await ctx.respond(embed=discord.Embed(title="Emoji Battle", description="Escolha seu emoji!", color=0xFF69B4), view=view)
-
-# ---------------------------
-# Comandos de Moderação
-# ---------------------------
-@bot.slash_command(name="ban", description="Banir usuário com logs")
-@commands.has_permissions(ban_members=True)
-async def ban(ctx, usuario: discord.Member, motivo: str="Sem motivo"):
-    await usuario.ban(reason=motivo)
-    await ctx.respond(f"{usuario} banido! 🛑")
-    await enviar_log_privado(ctx.guild, usuario, "BAN", motivo)
-    await enviar_log_servidor(ctx.guild, usuario, "BAN", motivo)
-
-@bot.slash_command(name="kick", description="Expulsar usuário com logs")
-@commands.has_permissions(kick_members=True)
-async def kick(ctx, usuario: discord.Member, motivo: str="Sem motivo"):
-    await usuario.kick(reason=motivo)
-    await ctx.respond(f"{usuario} expulso! 👢")
-    await enviar_log_privado(ctx.guild, usuario, "KICK", motivo)
-    await enviar_log_servidor(ctx.guild, usuario, "KICK", motivo)
-
-@bot.slash_command(name="mute", description="Mutar usuário")
-@commands.has_permissions(manage_roles=True)
-async def mute(ctx, usuario: discord.Member, tempo: str="10m"):
-    role = discord.utils.get(ctx.guild.roles, name="Muted")
-    if not role:
-        role = await ctx.guild.create_role(name="Muted")
-        for channel in ctx.guild.channels:
-            await channel.set_permissions(role, send_messages=False, add_reactions=False)
-    await usuario.add_roles(role)
-    await ctx.respond(f"{usuario} mutado por {tempo} ⏱️")
-    await enviar_log_privado(ctx.guild, usuario, "MUTE", tempo)
-    await enviar_log_servidor(ctx.guild, usuario, "MUTE", tempo)
-    multipliers = {"s":1,"m":60,"h":3600,"d":86400}
-    t = int(tempo[:-1]) * multipliers[tempo[-1]]
-    await asyncio.sleep(t)
-    if role in usuario.roles:
-        await usuario.remove_roles(role)
-        await ctx.channel.send(f"{usuario} foi desmutado ✅")
-
-@bot.slash_command(name="limpar", description="Apaga mensagens")
-@commands.has_permissions(manage_messages=True)
-async def limpar(ctx, quantidade: int=10, usuario: discord.Member=None):
-    if usuario:
-        msgs = [m async for m in ctx.channel.history(limit=100) if m.author==usuario]
-        await ctx.channel.delete_messages(msgs[:quantidade])
-        await ctx.respond(f"{quantidade} mensagens de {usuario} apagadas!")
-    else:
-        await ctx.channel.purge(limit=quantidade)
-        await ctx.respond(f"{quantidade} mensagens apagadas!")
-
-# ---------------------------
-# Perfil e Temas
-# ---------------------------
-@bot.slash_command(name="perfil", description="Mostra estatísticas do usuário")
-async def perfil(ctx, usuario: discord.Member=None):
-    usuario = usuario or ctx.author
-    pontos = leaderboard.get(usuario.id,0)
-    await ctx.respond(embed=discord.Embed(title=f"Perfil de {usuario}", description=f"Pontos: {pontos}", color=0x00FF00))
-
-@bot.slash_command(name="temas", description="Lista todos os temas disponíveis")
-async def temas(ctx):
-    await ctx.respond("Temas disponíveis: Animes, História, Geografia, Futebol, Matemática, Curiosidades")
+    await interaction.response.send_message(embed=discord.Embed(title="Pedra, Papel ou Tesoura", description="Escolha abaixo:", color=0xFFD700),
+                                           view=PPTView(bot_escolha))
 
 # ---------------------------
 # Rodar Bot
 # ---------------------------
-bot.run("SEU_DISCORD_TOKEN_AQUI")
+import os
+bot.run(os.environ["DISCORD_TOKEN"])
