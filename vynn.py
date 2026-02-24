@@ -51,13 +51,12 @@ streak = {}
 respondido = False
 
 # =========================
-# MULTIPLE CHOICE VIEW
+# MULTIPLE CHOICE
 # =========================
 class QuizView(discord.ui.View):
-    def __init__(self, opcoes, correta, canal):
+    def __init__(self, opcoes, correta):
         super().__init__(timeout=20)
         self.correta = normalizar(correta)
-        self.canal = canal
         self.respondido = False
 
         letras = ["A", "B", "C", "D"]
@@ -90,7 +89,6 @@ class QuizButton(discord.ui.Button):
                 msg += f"\n🔥 {interaction.user.name} está em streak de {streak[user]}!"
 
             await interaction.response.send_message(msg)
-
         else:
             await interaction.response.send_message("❌ Errou 😈", ephemeral=True)
 
@@ -108,7 +106,7 @@ async def nova_pergunta(canal, modo="normal"):
     respondido = False
 
     embed = discord.Embed(
-        title="❓ Pergunta",
+        title="🧠 Pergunta",
         description=pergunta["pergunta"],
         color=0x3498db
     )
@@ -133,13 +131,11 @@ async def nova_pergunta(canal, modo="normal"):
 
         embed.description = desc
 
-        view = QuizView(opcoes, pergunta["resposta"], canal)
+        view = QuizView(opcoes, pergunta["resposta"])
         await canal.send(embed=embed, view=view)
-
     else:
         await canal.send(embed=embed)
 
-    # TIMER
     timer_msg = await canal.send("⏳ Tempo: 20s")
 
     for i in range(20, 0, -1):
@@ -152,9 +148,13 @@ async def nova_pergunta(canal, modo="normal"):
         await canal.send(f"❌ Tempo acabou! Resposta: **{resposta_atual}**")
 
 # =========================
-# INICIAR
+# COMANDOS
 # =========================
-@bot.tree.command(name="iniciar")
+
+@bot.tree.command(
+    name="iniciar",
+    description="Inicia um quiz no modo manual (use /next)"
+)
 @app_commands.describe(tema="Tema", modo="normal ou multiple", tipo="manual")
 async def iniciar(interaction: discord.Interaction, tema: str, modo: str, tipo: str):
     global jogo_ativo, tema_atual, modo_auto
@@ -168,13 +168,13 @@ async def iniciar(interaction: discord.Interaction, tema: str, modo: str, tipo: 
     modo_auto = False
 
     await interaction.response.send_message(f"🚀 Quiz iniciado: {tema}")
-
     await nova_pergunta(interaction.channel, modo)
 
-# =========================
-# AUTO
-# =========================
-@bot.tree.command(name="auto")
+
+@bot.tree.command(
+    name="auto",
+    description="Inicia o quiz automático (até /stop)"
+)
 @app_commands.describe(tema="Tema", modo="normal ou multiple")
 async def auto(interaction: discord.Interaction, tema: str, modo: str):
     global jogo_ativo, tema_atual, modo_auto
@@ -193,10 +193,11 @@ async def auto(interaction: discord.Interaction, tema: str, modo: str):
         await nova_pergunta(interaction.channel, modo)
         await asyncio.sleep(2)
 
-# =========================
-# NEXT
-# =========================
-@bot.tree.command(name="next")
+
+@bot.tree.command(
+    name="next",
+    description="Pular para a próxima pergunta"
+)
 async def next_q(interaction: discord.Interaction):
     if not jogo_ativo:
         await interaction.response.send_message("❌ Nenhum jogo ativo", ephemeral=True)
@@ -205,10 +206,11 @@ async def next_q(interaction: discord.Interaction):
     await interaction.response.send_message("➡️ Próxima...")
     await nova_pergunta(interaction.channel)
 
-# =========================
-# STOP
-# =========================
-@bot.tree.command(name="stop")
+
+@bot.tree.command(
+    name="stop",
+    description="Finaliza o quiz e mostra o ranking"
+)
 async def stop(interaction: discord.Interaction):
     global jogo_ativo
 
@@ -228,8 +230,46 @@ async def stop(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
+
+@bot.tree.command(
+    name="perfil",
+    description="Veja suas estatísticas no quiz"
+)
+async def perfil(interaction: discord.Interaction):
+    user = str(interaction.user)
+
+    pontos = pontuacao.get(user, 0)
+    streak_user = streak.get(user, 0)
+
+    embed = discord.Embed(
+        title=f"📊 Perfil de {interaction.user.name}",
+        color=0x2ecc71
+    )
+
+    embed.add_field(name="🏆 Pontos", value=str(pontos), inline=True)
+    embed.add_field(name="🔥 Streak", value=str(streak_user), inline=True)
+
+    await interaction.response.send_message(embed=embed)
+
+
+@bot.tree.command(
+    name="temas",
+    description="Lista todos os temas disponíveis"
+)
+async def temas(interaction: discord.Interaction):
+    lista = list(TEMAS.keys())
+    texto = "\n".join([f"• {tema}" for tema in lista])
+
+    embed = discord.Embed(
+        title="📚 Temas disponíveis",
+        description=texto[:4000],
+        color=0x3498db
+    )
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+
 # =========================
-# CHAT RESPONSE
+# RESPOSTAS
 # =========================
 @bot.event
 async def on_message(message):
@@ -259,7 +299,7 @@ async def on_message(message):
             await message.channel.send(msg)
 
         elif user_resp in resposta_atual:
-            await message.channel.send("🤏 Quase acertou... tenta completar!")
+            await message.channel.send("🤏 Quase acertou...")
 
     await bot.process_commands(message)
 
