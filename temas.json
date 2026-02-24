@@ -18,9 +18,7 @@
   {"pergunta": "Qual o nome completo do Light Yagami em Death Note?", "resposta":["Light Yagami"], "imagem": null, "alternativas":["Light Yagami","L Lawliet","Ryuk","Misa Amane"]},
   {"pergunta": "Como se chama o Shinigami parceiro do Light?", "resposta":["Ryuk"], "imagem": null, "alternativas":["Ryuk","Rem","Sidoh","Shidoh"]},
   {"pergunta": "Qual o nome do protagonista de Fullmetal Alchemist?", "resposta":["Edward Elric"], "imagem": null, "alternativas":["Edward Elric","Alphonse Elric","Roy Mustang","Winry Rockbell"]},
-  {"pergunta": "O que Edward perdeu na transmutação humana?", "resposta":["Braço direito","Perna esquerda"], "imagem": null, "alternativas":["Braço direito","Perna esquerda","Olho esquerdo","Mão direita"]}
-]
-[
+  {"pergunta": "O que Edward perdeu na transmutação humana?", "resposta":["Braço direito","Perna esquerda"], "imagem": null, "alternativas":["Braço direito","Perna esquerda","Olho esquerdo","Mão direita"]},
   {"pergunta": "Qual o nome da vila do Naruto?", "resposta":["Vila da Folha","Konohagakure"], "imagem": null, "alternativas":["Vila da Folha","Vila da Areia","Vila da Névoa","Vila da Pedra"]},
   {"pergunta": "Quem é o vilão principal de My Hero Academia?", "resposta":["All For One"], "imagem": null, "alternativas":["All For One","Tomura Shigaraki","Dabi","Himiko Toga"]},
   {"pergunta": "Qual o nome do Titã Colossal em Ataque dos Titãs?", "resposta":["Bertholdt Hoover"], "imagem": null, "alternativas":["Bertholdt Hoover","Reiner Braun","Eren Yeager","Annie Leonhart"]},
@@ -30,7 +28,9 @@
   {"pergunta": "Quem transformou a irmã do Tanjiro em demônio?", "resposta":["Muzan Kibutsuji"], "imagem": null, "alternativas":["Muzan Kibutsuji","Akaza","Doma","Kokushibo"]},
   {"pergunta": "Qual o nome da respiração do Tanjiro?", "resposta":["Respiração da Água","Respiração do Sol"], "imagem": null, "alternativas":["Respiração da Água","Respiração do Sol","Respiração da Lua","Respiração da Fumaça"]},
   {"pergunta": "Quem é o líder dos Pilares em Demon Slayer?", "resposta":["Kagaya Ubuyashiki"], "imagem": null, "alternativas":["Kagaya Ubuyashiki","Giyu Tomioka","Shinobu Kocho","Kyojuro Rengoku"]},
-  {"pergunta": "Qual o nome do protagonista de Tokyo Ghoul?", "resposta":["Ken Kaneki"], "imagem": null, "alternativas":["Ken Kaneki","Touka Kirishima","Renji Yomo","Hideyoshi Nagachika"]},
+  {"pergunta": "Qual o nome do protagonista de Tokyo Ghoul?", "resposta":["Ken Kaneki"], "imagem": null, "alternativas":["Ken Kaneki","Touka Kirishima","Renji Yomo","Hideyoshi Nagachika"]}
+]
+[
   {"pergunta": "Qual a organização que caça Ghouls em Tokyo Ghoul?", "resposta":["CCG","Comissão de Contra Medidas de Ghoul"], "imagem": null, "alternativas":["CCG","Aogiri Tree","Ghoul Association","Tokyo Police"]},
   {"pergunta": "Qual o nome do protagonista de Sword Art Online?", "resposta":["Kirito","Kazuto Kirigaya"], "imagem": null, "alternativas":["Kirito","Asuna","Eugeo","Sinon"]},
   {"pergunta": "Qual o nome da namorada do Kirito em SAO?", "resposta":["Asuna"], "imagem": null, "alternativas":["Asuna","Leafa","Sinon","Alice"]},
@@ -40,9 +40,7 @@
   {"pergunta": "Qual o nome do protagonista de Sword Art Online Alicization?", "resposta":["Kirito"], "imagem": null, "alternativas":["Kirito","Eugeo","Alice","Sinon"]},
   {"pergunta": "Quem é o antagonista principal de SAO?", "resposta":["Akihiko Kayaba","Heathcliff"], "imagem": null, "alternativas":["Akihiko Kayaba","Heathcliff","Sugou Nobuyuki","Kuradeel"]},
   {"pergunta": "Qual o nome do protagonista de Overlord?", "resposta":["Ainz Ooal Gown","Momonga"], "imagem": null, "alternativas":["Ainz Ooal Gown","Momonga","Albedo","Shalltear"]},
-  {"pergunta": "Qual a classe do Ainz em Overlord?", "resposta":["Mago Supremo","Lich"], "imagem": null, "alternativas":["Mago Supremo","Lich","Guerreiro","Necromante"]}
-]
-[
+  {"pergunta": "Qual a classe do Ainz em Overlord?", "resposta":["Mago Supremo","Lich"], "imagem": null, "alternativas":["Mago Supremo","Lich","Guerreiro","Necromante"]},
   {"pergunta": "Qual o nome do protagonista de Black Clover?", "resposta":["Asta"], "imagem": null, "alternativas":["Asta","Yuno","Noelle","Yami"]},
   {"pergunta": "Qual o poder único do Asta em Black Clover?", "resposta":["Anti-Magia"], "imagem": null, "alternativas":["Anti-Magia","Magia de Fogo","Magia de Vento","Magia da Luz"]},
   {"pergunta": "Quem é o rival do Asta em Black Clover?", "resposta":["Yuno"], "imagem": null, "alternativas":["Yuno","Noelle","Luck","Finral"]},
@@ -65,46 +63,45 @@
   {"pergunta": "Qual o nome do protagonista de Chainsaw Man?", "resposta":["Denji"], "imagem": null, "alternativas":["Denji","Power","Aki Hayakawa","Makima"]}
 ]
 [
-  {"pergunta": "Com quem o Denji se fundiu em Chainsaw Man?", "resposta":["Pochita"], "imagem": null, "alternativas":["Pochita","Power","Makima","Aki Hayakawa"]},
-  {"pergunta": "Qual o nome do protagonista de Mob Psycho 100?", "resposta":["Shigeo Kageyama","Mob"], "imagem": null, "alternativas":["Shigeo Kageyama","Reigen Arataka","Ritsu Kageyama","Teruki Hanazawa"]},
-  {"pergunta": "Qual o nome do professor do Mob?", "resposta":["Reigen Arataka"], "imagem": null, "alternativas":["Reigen Arataka","Dimple","Mob","Teruki"]},
-  {"pergunta": "Qual o nome do protagonista de One Punch Man?", "resposta":["Saitama"], "imagem": null, "alternativas":["Saitama","Genos","Speed-o'-Sound Sonic","Bang"]},
-  {"pergunta": "Por que o Saitama ficou tão forte?", "resposta":["Treinou muito"], "imagem": null, "alternativas":["Treinou muito","Nascido forte","Recebeu poderes","Treino de herói"]},
-  {"pergunta": "Qual o nome do ciborgue parceiro do Saitama?", "resposta":["Genos"], "imagem": null, "alternativas":["Genos","Garou","King","Fubuki"]},
+  {"pergunta": "Qual o nome do protagonista de Mob Psycho 100?", "resposta":["Shigeo Kageyama","Mob"], "imagem": null, "alternativas":["Shigeo Kageyama","Ritsu Kageyama","Teru Mikami","Dimple"]},
+  {"pergunta": "Qual o nome do professor do Mob?", "resposta":["Reigen Arataka"], "imagem": null, "alternativas":["Reigen Arataka","Dimple","Teru Mikami","Ritsu Kageyama"]},
+  {"pergunta": "Qual o nome do protagonista de One Punch Man?", "resposta":["Saitama"], "imagem": null, "alternativas":["Saitama","Genos","Speed-o'-Sound Sonic","King"]},
+  {"pergunta": "Por que o Saitama ficou tão forte?", "resposta":["Treinou muito (100 flexões, 100 abdominais, 100 agachamentos e 10km de corrida por dia)"], "imagem": null, "alternativas":["Treinou muito","Poder divino","Experimento científico","Reencarnação"]},
+  {"pergunta": "Qual o nome do ciborgue parceiro do Saitama?", "resposta":["Genos"], "imagem": null, "alternativas":["Genos","Speed-o'-Sound Sonic","King","Mumen Rider"]},
   {"pergunta": "Qual o rank do Saitama na Associação de Heróis?", "resposta":["Classe B"], "imagem": null, "alternativas":["Classe B","Classe S","Classe A","Classe C"]},
-  {"pergunta": "Qual o nome do protagonista de Hajime no Ippo?", "resposta":["Ippo Makunouchi"], "imagem": null, "alternativas":["Ippo Makunouchi","Takuma Makunouchi","Mamoru Takamura","Ichiro Miyata"]},
-  {"pergunta": "Qual o golpe especial do Ippo?", "resposta":["Dempsey Roll"], "imagem": null, "alternativas":["Dempsey Roll","Gazelle Punch","Uppercut","Hook"]},
-  {"pergunta": "Qual o nome do protagonista de Haikyuu?", "resposta":["Shoyo Hinata"], "imagem": null, "alternativas":["Shoyo Hinata","Tobio Kageyama","Kei Tsukishima","Yamaguchi"]},
-  {"pergunta": "Qual o time do Hinata em Haikyuu?", "resposta":["Karasuno"], "imagem": null, "alternativas":["Karasuno","Aoba Johsai","Nekoma","Fukurodani"]},
+  {"pergunta": "Qual o nome do protagonista de Hajime no Ippo?", "resposta":["Ippo Makunouchi"], "imagem": null, "alternativas":["Ippo Makunouchi","Takamura Mamoru","Aoki Masaru","Kimura Mamoru"]},
+  {"pergunta": "Qual o golpe especial do Ippo?", "resposta":["Dempsey Roll"], "imagem": null, "alternativas":["Dempsey Roll","Lariat","Uppercut","Right Hook"]},
+  {"pergunta": "Qual o nome do protagonista de Haikyuu?", "resposta":["Shoyo Hinata"], "imagem": null, "alternativas":["Shoyo Hinata","Tobio Kageyama","Kei Tsukishima","Yamaguchi Tadashi"]},
+  {"pergunta": "Qual o time do Hinata em Haikyuu?", "resposta":["Karasuno"], "imagem": null, "alternativas":["Karasuno","Nekoma","Aoba Johsai","Fukurodani"]},
   {"pergunta": "Qual o nome do protagonista de Slam Dunk?", "resposta":["Hanamichi Sakuragi"], "imagem": null, "alternativas":["Hanamichi Sakuragi","Kaede Rukawa","Takenori Akagi","Ryota Miyagi"]},
   {"pergunta": "Qual o time do Sakuragi em Slam Dunk?", "resposta":["Shohoku"], "imagem": null, "alternativas":["Shohoku","Ryonan","Sannoh","Kainan"]},
-  {"pergunta": "Qual o nome do protagonista de Kuroko no Basket?", "resposta":["Tetsuya Kuroko"], "imagem": null, "alternativas":["Tetsuya Kuroko","Taiga Kagami","Ryota Kise","Seijuro Akashi"]},
-  {"pergunta": "Qual o apelido dos jogadores talentosos em Kuroko no Basket?", "resposta":["Geração dos Milagres"], "imagem": null, "alternativas":["Geração dos Milagres","Clube dos Campeões","All Stars","Equipe Fantasma"]},
-  {"pergunta": "Qual o nome do protagonista de Blue Lock?", "resposta":["Yoichi Isagi"], "imagem": null, "alternativas":["Yoichi Isagi","Rin Itoshi","Seishiro Nagi","Meguru Bachira"]},
-  {"pergunta": "Qual o conceito central de Blue Lock?", "resposta":["Egoísmo no futebol"], "imagem": null, "alternativas":["Egoísmo no futebol","Trabalho em equipe","Disciplina","Tática avançada"]},
+  {"pergunta": "Qual o nome do protagonista de Kuroko no Basket?", "resposta":["Tetsuya Kuroko"], "imagem": null, "alternativas":["Tetsuya Kuroko","Taiga Kagami","Ryota Kise","Shintaro Midorima"]},
+  {"pergunta": "Qual o apelido dos jogadores talentosos em Kuroko no Basket?", "resposta":["Geração dos Milagres"], "imagem": null, "alternativas":["Geração dos Milagres","Super 5","Magníficos 7","Estrelas do Basquete"]},
+  {"pergunta": "Qual o nome do protagonista de Blue Lock?", "resposta":["Yoichi Isagi"], "imagem": null, "alternativas":["Yoichi Isagi","Meguru Bachira","Rin Itoshi","Seishiro Nagi"]},
+  {"pergunta": "Qual o conceito central de Blue Lock?", "resposta":["Egoísmo no futebol"], "imagem": null, "alternativas":["Egoísmo no futebol","Trabalho em equipe","Disciplina","Resistência"]},
   {"pergunta": "Qual o nome do protagonista de Neon Genesis Evangelion?", "resposta":["Shinji Ikari"], "imagem": null, "alternativas":["Shinji Ikari","Asuka Langley","Rei Ayanami","Kaworu Nagisa"]},
-  {"pergunta": "Qual o nome do robô do Shinji em Evangelion?", "resposta":["Eva Unidade-01"], "imagem": null, "alternativas":["Eva Unidade-01","Eva Unidade-00","Eva Unidade-02","Eva Unidade-03"]},
-  {"pergunta": "Qual o nome da organização em Evangelion?", "resposta":["NERV"], "imagem": null, "alternativas":["NERV","SEELE","GEHIRN","WILLE"]}
+  {"pergunta": "Qual o nome do robô do Shinji em Evangelion?", "resposta":["Eva Unidade-01"], "imagem": null, "alternativas":["Eva Unidade-01","Eva Unidade-02","Eva Unidade-00","Eva Unidade-03"]},
+  {"pergunta": "Qual o nome da organização em Evangelion?", "resposta":["NERV"], "imagem": null, "alternativas":["NERV","SEELE","Gendo Ikari","UN"]},
+  {"pergunta": "Qual o nome do protagonista de Cowboy Bebop?", "resposta":["Spike Spiegel"], "imagem": null, "alternativas":["Spike Spiegel","Jet Black","Faye Valentine","Ed"]},
+  {"pergunta": "Qual o nome da nave em Cowboy Bebop?", "resposta":["Bebop"], "imagem": null, "alternativas":["Bebop","Swordfish II","Red Tail","Hammerhead"]},
+  {"pergunta": "Qual o nome do protagonista de Trigun?", "resposta":["Vash the Stampede"], "imagem": null, "alternativas":["Vash the Stampede","Nicholas D. Wolfwood","Meryl Stryfe","Milly Thompson"]},
+  {"pergunta": "Qual o apelido do Vash em Trigun?", "resposta":["Tufão Humanóide"], "imagem": null, "alternativas":["Tufão Humanóide","Punho de Ferro","Fantasma Veloz","O Solitário"]},
+  {"pergunta": "Qual o nome do protagonista de Code Geass?", "resposta":["Lelouch vi Britannia"], "imagem": null, "alternativas":["Lelouch vi Britannia","Suzaku Kururugi","C.C.","Nunnally vi Britannia"]},
+  {"pergunta": "Qual o poder do Lelouch em Code Geass?", "resposta":["Geass"], "imagem": null, "alternativas":["Geass","Regalia","Força Bruta","Inteligência"]},
+  {"pergunta": "Qual o alter ego do Lelouch em Code Geass?", "resposta":["Zero"], "imagem": null, "alternativas":["Zero","Lelouch","C.C.","Schneizel"]},
+  {"pergunta": "Qual o nome do protagonista de Steins;Gate?", "resposta":["Rintaro Okabe"], "imagem": null, "alternativas":["Rintaro Okabe","Kurisu Makise","Mayuri Shiina","Itaru Hashida"]},
+  {"pergunta": "Qual a invenção principal de Steins;Gate?", "resposta":["Microondas do Futuro"], "imagem": null, "alternativas":["Microondas do Futuro","D-Mail","Phone Microwave","Time Machine"]},
+  {"pergunta": "Qual o nome do protagonista de Psycho-Pass?", "resposta":["Akane Tsunemori"], "imagem": null, "alternativas":["Akane Tsunemori","Shinya Kogami","Nobuchika Ginoza","Tomomi Masaoka"]}
 ]
 [
-  {"pergunta": "Qual o nome do protagonista de Cowboy Bebop?", "resposta":["Spike Spiegel"], "imagem": null, "alternativas":["Spike Spiegel","Jet Black","Faye Valentine","Edward"]},
-  {"pergunta": "Qual o nome da nave em Cowboy Bebop?", "resposta":["Bebop"], "imagem": null, "alternativas":["Bebop","Swordfish II","Red Tail","Hammerhead"]},
-  {"pergunta": "Qual o nome do protagonista de Trigun?", "resposta":["Vash the Stampede"], "imagem": null, "alternativas":["Vash the Stampede","Nicholas D. Wolfwood","Knives Millions","Meryl Stryfe"]},
-  {"pergunta": "Qual o apelido do Vash em Trigun?", "resposta":["Tufão Humanóide"], "imagem": null, "alternativas":["Tufão Humanóide","O Pistoleiro","O Viajante","O Estranho"]},
-  {"pergunta": "Qual o nome do protagonista de Code Geass?", "resposta":["Lelouch vi Britannia"], "imagem": null, "alternativas":["Lelouch vi Britannia","Suzaku Kururugi","C.C.","Kallen Kozuki"]},
-  {"pergunta": "Qual o poder do Lelouch em Code Geass?", "resposta":["Geass"], "imagem": null, "alternativas":["Geass","Inteligência","Velocidade","Magia"]},
-  {"pergunta": "Qual o alter ego do Lelouch em Code Geass?", "resposta":["Zero"], "imagem": null, "alternativas":["Zero","Lelouch","Emperor","Knight"]},
-  {"pergunta": "Qual o nome do protagonista de Steins;Gate?", "resposta":["Rintaro Okabe"], "imagem": null, "alternativas":["Rintaro Okabe","Kurisu Makise","Mayuri Shiina","Itaru Hashida"]},
-  {"pergunta": "Qual a invenção principal de Steins;Gate?", "resposta":["Microondas do Futuro","Phone Microwave"], "imagem": null, "alternativas":["Microondas do Futuro","Time Machine","D-Mail","Gadget de viagem no tempo"]},
-  {"pergunta": "Qual o nome do protagonista de Psycho-Pass?", "resposta":["Akane Tsunemori"], "imagem": null, "alternativas":["Akane Tsunemori","Shinya Kogami","Nobuchika Ginoza","Shion Karanomori"]},
-  {"pergunta": "O que mede o sistema Sibyla em Psycho-Pass?", "resposta":["Coeficiente de crime","Índice de periculosidade"], "imagem": null, "alternativas":["Coeficiente de crime","Índice de periculosidade","Idade","Ranking de heróis"]},
-  {"pergunta": "Qual o nome do protagonista de Violet Evergarden?", "resposta":["Violet Evergarden"], "imagem": null, "alternativas":["Violet Evergarden","Claudia Hodgins","Gilbert Bougainvillea","Cattleya"]},
-  {"pergunta": "O que Violet escreve em Violet Evergarden?", "resposta":["Cartas automemória"], "imagem": null, "alternativas":["Cartas automemória","Relatórios","Diários","Mensagens de texto"]},
+  {"pergunta": "O que mede o sistema Sibyla em Psycho-Pass?", "resposta":["Coeficiente de crime"], "imagem": null, "alternativas":["Coeficiente de crime","Poder Mental","Energia Vital","Periculosidade"]},
+  {"pergunta": "Qual o nome do protagonista de Violet Evergarden?", "resposta":["Violet Evergarden"], "imagem": null, "alternativas":["Violet Evergarden","Claudia Hodgins","Gilbert Bougainvillea","Anne Magnolia"]},
+  {"pergunta": "O que Violet escreve em Violet Evergarden?", "resposta":["Cartas automemória"], "imagem": null, "alternativas":["Cartas automemória","Relatórios","Mensagens secretas","Diários"]},
   {"pergunta": "Qual o nome do protagonista de Your Lie in April?", "resposta":["Kousei Arima"], "imagem": null, "alternativas":["Kousei Arima","Kaori Miyazono","Tsubaki Sawabe","Ryota Watari"]},
-  {"pergunta": "Qual o instrumento do Kousei em Your Lie in April?", "resposta":["Piano"], "imagem": null, "alternativas":["Piano","Violino","Guitarra","Violoncelo"]},
-  {"pergunta": "Qual o nome do protagonista de Anohana?", "resposta":["Jinta Yadomi","Jintan"], "imagem": null, "alternativas":["Jinta Yadomi","Meiko Honma","Atsumu Matsuyuki","Naruko Anjou"]},
-  {"pergunta": "Quem é o fantasma em Anohana?", "resposta":["Meiko Honma","Menma"], "imagem": null, "alternativas":["Meiko Honma","Jinta Yadomi","Atsumu Matsuyuki","Naruko Anjou"]},
-  {"pergunta": "Qual o nome do protagonista de Clannad?", "resposta":["Tomoya Okazaki"], "imagem": null, "alternativas":["Tomoya Okazaki","Nagisa Furukawa","Sunohara Youhei","Fuko Ibuki"]},
-  {"pergunta": "Qual o nome da protagonista feminina de Clannad?", "resposta":["Nagisa Furukawa"], "imagem": null, "alternativas":["Nagisa Furukawa","Tomoyo Sakagami","Kyou Fujibayashi","Kotomi Ichinose"]},
-  {"pergunta": "Qual o nome do protagonista de Angel Beats?", "resposta":["Yuzuru Otonashi"], "imagem": null, "alternativas":["Yuzuru Otonashi","Kanade Tachibana","Hinata Hideki","Takeyama"]}  
+  {"pergunta": "Qual o instrumento do Kousei em Your Lie in April?", "resposta":["Piano"], "imagem": null, "alternativas":["Piano","Violino","Guitarra","Bateria"]},
+  {"pergunta": "Qual o nome do protagonista de Anohana?", "resposta":["Jinta Yadomi","Jintan"], "imagem": null, "alternativas":["Jinta Yadomi","Meiko Honma","Atsumu Matsuyuki","Tetsudo Heiwa"]},
+  {"pergunta": "Quem é o fantasma em Anohana?", "resposta":["Meiko Honma","Menma"], "imagem": null, "alternativas":["Meiko Honma","Jinta Yadomi","Atsumu Matsuyuki","Tetsudo Heiwa"]},
+  {"pergunta": "Qual o nome do protagonista de Clannad?", "resposta":["Tomoya Okazaki"], "imagem": null, "alternativas":["Tomoya Okazaki","Nagisa Furukawa","Youhei Sunohara","Kyou Fujibayashi"]},
+  {"pergunta": "Qual o nome da protagonista feminina de Clannad?", "resposta":["Nagisa Furukawa"], "imagem": null, "alternativas":["Nagisa Furukawa","Tomoya Okazaki","Kyou Fujibayashi","Kotomi Ichinose"]},
+  {"pergunta": "Qual o nome do protagonista de Angel Beats?", "resposta":["Yuzuru Otonashi"], "imagem": null, "alternativas":["Yuzuru Otonashi","Kanade Tachibana","Hideki Hinata","Yui"]}
 ]
