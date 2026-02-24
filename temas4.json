@@ -1,24 +1,29 @@
 {
-  "futebol": [
+  "ciencia": [
     {
-      "pergunta": "Pergunta 1 de futebol?",
-      "resposta": "resposta1"
-    },
+      "pergunta": "Qual é o elemento químico da água?",
+      "resposta": "B",
+      "opcoes": {
+        "A": "CO2",
+        "B": "H2O",
+        "C": "O2",
+        "D": "NaCl"
+      },
+      "imagem": "https://i.imgur.com/IOp6n3y.png"
+    }
+  ],
+
+  "tecnologia": [
     {
-      "pergunta": "Pergunta 2 de futebol?",
-      "resposta": "resposta2"
-    },
-    {
-      "pergunta": "Pergunta 3 de futebol?",
-      "resposta": "resposta3"
-    },
-    {
-      "pergunta": "Pergunta 4 de futebol?",
-      "resposta": "resposta4"
-    },
-    {
-      "pergunta": "Pergunta 5 de futebol?",
-      "resposta": "resposta5"
+      "pergunta": "O que significa CPU?",
+      "resposta": "A",
+      "opcoes": {
+        "A": "Central Processing Unit",
+        "B": "Computer Personal Unit",
+        "C": "Central Program Utility",
+        "D": "Core Processing User"
+      },
+      "imagem": "https://i.imgur.com/IOp6n3y.png"
     }
   ]
 }
