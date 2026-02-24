@@ -1,0 +1,15 @@
+{
+  "naruto": [
+    {
+      "pergunta": "Quem é o pai de Naruto?",
+      "resposta": "A",
+      "opcoes": {
+        "A": "Minato",
+        "B": "Jiraiya",
+        "C": "Hiruzen",
+        "D": "Kakashi"
+      },
+      "imagem": "https://i.imgur.com/3GvwNBf.png"
+    }
+  ]
+}
