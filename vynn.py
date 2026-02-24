@@ -11,7 +11,7 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 # CARREGANDO TEMAS
 # ---------------------------------------
 temas_perguntas = {}
-tema_files = ["temas.json","temas2.json","temas3.json","temas4.json"]
+tema_files = ["temas.json"]
 tema_nomes = ["Animes","História","Futebol","Matemática"]
 
 for nome, arquivo in zip(tema_nomes, tema_files):
