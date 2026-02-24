@@ -5,6 +5,7 @@ import json
 import random
 import asyncio
 import os
+import difflib
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -29,9 +30,12 @@ for key, file in temas_files.items():
 # ----------- PARTIDAS ATIVAS -----------
 partidas_ativas = {}  # guild_id: {tema, perguntas, index, auto, pontos, multipla, ja_clicou}
 
-# ----------- HELPERS -----------
+# ----------- FUNÇÃO COMPARAR RESPOSTA -----------
 def comparar_resposta(correta, resposta_usuario):
-    return correta.lower() in resposta_usuario.lower()
+    correta = correta.lower().strip()
+    resposta_usuario = resposta_usuario.lower().strip()
+    ratio = difflib.SequenceMatcher(None, correta, resposta_usuario).ratio()
+    return ratio >= 0.8  # 80% de similaridade aceita
 
 # ----------- VIEW MÚLTIPLA ESCOLHA -----------
 class MultipleChoiceView(ui.View):
@@ -66,12 +70,11 @@ class MCButton(ui.Button):
         else:
             await interaction.response.send_message(f"❌ {interaction.user.name} errou!", ephemeral=True)
 
-# ----------- FUNÇÃO ENVIAR PERGUNTA -----------
+# ----------- ENVIAR PERGUNTA COM TIMER VISUAL -----------
 async def enviar_pergunta(interaction: Interaction, guild_id):
     partida = partidas_ativas[guild_id]
     idx = partida["index"]
     if idx >= len(partida["perguntas"]):
-        # Fim da partida
         await finalizar_partida(interaction, guild_id)
         return
     pergunta = partida["perguntas"][idx]
@@ -81,15 +84,16 @@ async def enviar_pergunta(interaction: Interaction, guild_id):
         embed.set_image(url=pergunta["imagem"])
     
     partida["ja_clicou"] = []
+
     if partida.get("multipla", True) and "opcoes" in pergunta:
         view = MultipleChoiceView(pergunta, guild_id)
         await interaction.channel.send(embed=embed, view=view)
     else:
-        await interaction.channel.send(embed=embed)
-    # timer 20s
-    for i in range(20,0,-1):
-        await asyncio.sleep(1)
-    await interaction.channel.send("⏰ Tempo esgotado! Próxima pergunta ou use /stop para encerrar.")
+        msg = await interaction.channel.send(embed=embed)
+        for t in range(20,0,-5):
+            await interaction.channel.send(f"⏱ {t}s restantes")
+            await asyncio.sleep(5)
+        await interaction.channel.send("⏰ Tempo esgotado! Ninguém acertou ou acertou tarde demais.")
 
 # ----------- FINALIZAR PARTIDA COM TOP 3 -----------
 async def finalizar_partida(interaction: Interaction, guild_id):
