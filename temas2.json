@@ -1,46 +1,54 @@
 {
   "historia": [
     {
-      "pergunta": "Pergunta 1 de historia?",
-      "resposta": "resposta1"
+      "pergunta": "Quem descobriu o Brasil?",
+      "resposta": "A",
+      "opcoes": {
+        "A": "Pedro Álvares Cabral",
+        "B": "Cristóvão Colombo",
+        "C": "Napoleão",
+        "D": "Dom Pedro I"
+      },
+      "imagem": "https://i.imgur.com/0rZ4wYB.png"
     },
     {
-      "pergunta": "Pergunta 2 de historia?",
-      "resposta": "resposta2"
-    },
-    {
-      "pergunta": "Pergunta 3 de historia?",
-      "resposta": "resposta3"
-    },
-    {
-      "pergunta": "Pergunta 4 de historia?",
-      "resposta": "resposta4"
-    },
-    {
-      "pergunta": "Pergunta 5 de historia?",
-      "resposta": "resposta5"
+      "pergunta": "Em que ano começou a Segunda Guerra Mundial?",
+      "resposta": "B",
+      "opcoes": {
+        "A": "1945",
+        "B": "1939",
+        "C": "1914",
+        "D": "1929"
+      },
+      "imagem": "https://i.imgur.com/0rZ4wYB.png"
     }
   ],
+
   "geografia": [
     {
-      "pergunta": "Pergunta 1 de geografia?",
-      "resposta": "resposta1"
-    },
+      "pergunta": "Qual é o maior país do mundo?",
+      "resposta": "D",
+      "opcoes": {
+        "A": "Brasil",
+        "B": "China",
+        "C": "EUA",
+        "D": "Rússia"
+      },
+      "imagem": "https://i.imgur.com/zYIlgBl.png"
+    }
+  ],
+
+  "matematica": [
     {
-      "pergunta": "Pergunta 2 de geografia?",
-      "resposta": "resposta2"
-    },
-    {
-      "pergunta": "Pergunta 3 de geografia?",
-      "resposta": "resposta3"
-    },
-    {
-      "pergunta": "Pergunta 4 de geografia?",
-      "resposta": "resposta4"
-    },
-    {
-      "pergunta": "Pergunta 5 de geografia?",
-      "resposta": "resposta5"
+      "pergunta": "Quanto é 9 x 7?",
+      "resposta": "A",
+      "opcoes": {
+        "A": "63",
+        "B": "56",
+        "C": "72",
+        "D": "49"
+      },
+      "imagem": "https://i.imgur.com/IOp6n3y.png"
     }
   ]
 }
