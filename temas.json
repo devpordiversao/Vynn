@@ -1,65 +1,47 @@
 {
   "naruto": [
-    {
-      "pergunta": "Quem é o pai de Naruto Uzumaki?",
-      "resposta": "A",
-      "opcoes": {
-        "A": "Minato Namikaze",
-        "B": "Jiraiya",
-        "C": "Kakashi Hatake",
-        "D": "Iruka Umino"
-      },
-      "imagem": "https://i.imgur.com/3GvwNBf.png"
-    },
-    {
-      "pergunta": "Qual é o nome da raposa de nove caudas?",
-      "resposta": "B",
-      "opcoes": {
-        "A": "Shukaku",
-        "B": "Kurama",
-        "C": "Matatabi",
-        "D": "Isobu"
-      },
-      "imagem": "https://i.imgur.com/3GvwNBf.png"
-    },
-    {
-      "pergunta": "Quem foi o primeiro Hokage?",
-      "resposta": "C",
-      "opcoes": {
-        "A": "Tobirama",
-        "B": "Minato",
-        "C": "Hashirama",
-        "D": "Hiruzen"
-      },
-      "imagem": "https://i.imgur.com/3GvwNBf.png"
-    }
-  ],
+    {"pergunta":"Quem é o pai de Naruto Uzumaki?","resposta":"A","opcoes":{"A":"Minato Namikaze","B":"Jiraiya","C":"Kakashi","D":"Iruka"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é a mãe de Naruto?","resposta":"C","opcoes":{"A":"Tsunade","B":"Hinata","C":"Kushina Uzumaki","D":"Sakura"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual é o nome da raposa de nove caudas?","resposta":"B","opcoes":{"A":"Shukaku","B":"Kurama","C":"Matatabi","D":"Isobu"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual é o time do Naruto?","resposta":"A","opcoes":{"A":"Time 7","B":"Time 10","C":"Time 8","D":"Time Guy"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o sensei do Time 7?","resposta":"B","opcoes":{"A":"Iruka","B":"Kakashi","C":"Asuma","D":"Guy"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o rival principal do Naruto?","resposta":"C","opcoes":{"A":"Neji","B":"Gaara","C":"Sasuke","D":"Lee"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem foi o primeiro Hokage?","resposta":"D","opcoes":{"A":"Tobirama","B":"Hiruzen","C":"Minato","D":"Hashirama"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o irmão de Itachi?","resposta":"A","opcoes":{"A":"Sasuke","B":"Naruto","C":"Obito","D":"Madara"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual clã Naruto pertence?","resposta":"C","opcoes":{"A":"Uchiha","B":"Hyuga","C":"Uzumaki","D":"Senju"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual é o sonho de Naruto?","resposta":"B","opcoes":{"A":"Ser rico","B":"Ser Hokage","C":"Ser ANBU","D":"Ser sensei"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
 
-  "boku_no_hero": [
-    {
-      "pergunta": "Qual é o nome verdadeiro do Deku?",
-      "resposta": "A",
-      "opcoes": {
-        "A": "Izuku Midoriya",
-        "B": "Bakugo Katsuki",
-        "C": "Shoto Todoroki",
-        "D": "Tenya Iida"
-      },
-      "imagem": "https://i.imgur.com/tv6GQ0K.png"
-    }
-  ],
+    {"pergunta":"Quem treinou Naruto no modo sábio?","resposta":"A","opcoes":{"A":"Fukasaku","B":"Jiraiya","C":"Kakashi","D":"Minato"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem matou Jiraiya?","resposta":"C","opcoes":{"A":"Itachi","B":"Obito","C":"Pain","D":"Madara"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual é o nome real do Pain?","resposta":"B","opcoes":{"A":"Obito","B":"Nagato","C":"Yahiko","D":"Konan"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem lidera a Akatsuki?","resposta":"D","opcoes":{"A":"Itachi","B":"Nagato","C":"Konan","D":"Pain"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual olho especial do clã Uchiha?","resposta":"A","opcoes":{"A":"Sharingan","B":"Byakugan","C":"Rinnegan","D":"Tenseigan"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual é o doujutsu dos Hyuga?","resposta":"B","opcoes":{"A":"Sharingan","B":"Byakugan","C":"Rinnegan","D":"Mangekyou"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o oitavo Hokage (Boruto)?","resposta":"C","opcoes":{"A":"Naruto","B":"Kakashi","C":"Shikamaru","D":"Sasuke"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem foi o quarto Hokage?","resposta":"A","opcoes":{"A":"Minato","B":"Hiruzen","C":"Tsunade","D":"Kakashi"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem selou a Kurama no Naruto?","resposta":"D","opcoes":{"A":"Jiraiya","B":"Hiruzen","C":"Kushina","D":"Minato"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é a esposa do Naruto?","resposta":"A","opcoes":{"A":"Hinata","B":"Sakura","C":"Ino","D":"Tenten"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
 
-  "one_piece": [
-    {
-      "pergunta": "Quem é o capitão dos Chapéus de Palha?",
-      "resposta": "C",
-      "opcoes": {
-        "A": "Zoro",
-        "B": "Sanji",
-        "C": "Luffy",
-        "D": "Ace"
-      },
-      "imagem": "https://i.imgur.com/2yaf2wb.png"
-    }
+    {"pergunta":"Quem é o filho do Naruto?","resposta":"B","opcoes":{"A":"Kawaki","B":"Boruto","C":"Shinki","D":"Mitsuki"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é a filha do Naruto?","resposta":"C","opcoes":{"A":"Sarada","B":"Inojin","C":"Himawari","D":"Chocho"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o pai do Sasuke?","resposta":"A","opcoes":{"A":"Fugaku","B":"Madara","C":"Itachi","D":"Obito"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem destruiu o clã Uchiha?","resposta":"D","opcoes":{"A":"Obito","B":"Madara","C":"Danzo","D":"Itachi"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem ajudou Itachi?","resposta":"B","opcoes":{"A":"Pain","B":"Obito","C":"Madara","D":"Kisame"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o melhor amigo de Naruto?","resposta":"C","opcoes":{"A":"Shikamaru","B":"Kiba","C":"Sasuke","D":"Lee"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o sensei do Rock Lee?","resposta":"A","opcoes":{"A":"Might Guy","B":"Kakashi","C":"Asuma","D":"Iruka"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual é o poder do Gaara?","resposta":"B","opcoes":{"A":"Fogo","B":"Areia","C":"Água","D":"Raio"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual bijuu o Gaara tinha?","resposta":"C","opcoes":{"A":"Kurama","B":"Matatabi","C":"Shukaku","D":"Gyuki"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem reviveu Madara?","resposta":"D","opcoes":{"A":"Kabuto","B":"Obito","C":"Pain","D":"Black Zetsu"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+
+    {"pergunta":"Quem é o vilão final de Naruto Shippuden?","resposta":"A","opcoes":{"A":"Kaguya","B":"Madara","C":"Obito","D":"Pain"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual técnica principal do Naruto?","resposta":"B","opcoes":{"A":"Chidori","B":"Rasengan","C":"Amaterasu","D":"Susanoo"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem usa Chidori?","resposta":"C","opcoes":{"A":"Naruto","B":"Itachi","C":"Sasuke","D":"Gaara"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o mestre do Sasuke?","resposta":"D","opcoes":{"A":"Kakashi","B":"Itachi","C":"Madara","D":"Orochimaru"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o sannin das cobras?","resposta":"A","opcoes":{"A":"Orochimaru","B":"Jiraiya","C":"Tsunade","D":"Kabuto"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é a sannin das lesmas?","resposta":"C","opcoes":{"A":"Kushina","B":"Sakura","C":"Tsunade","D":"Ino"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o sannin dos sapos?","resposta":"B","opcoes":{"A":"Naruto","B":"Jiraiya","C":"Minato","D":"Hiruzen"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem criou o Rasengan?","resposta":"D","opcoes":{"A":"Jiraiya","B":"Naruto","C":"Hiruzen","D":"Minato"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Quem é o líder da vila da areia?","resposta":"A","opcoes":{"A":"Kazekage","B":"Hokage","C":"Raikage","D":"Mizukage"},"imagem":"https://i.imgur.com/3GvwNBf.png"},
+    {"pergunta":"Qual é o nome do exame ninja?","resposta":"B","opcoes":{"A":"Genin Test","B":"Exame Chunin","C":"Jounin Test","D":"Academia"},"imagem":"https://i.imgur.com/3GvwNBf.png"}
   ]
 }
