@@ -1,40 +1,44 @@
 {
   "futebol": [
-    {
-      "pergunta": "Quantos jogadores um time tem em campo?",
-      "resposta": "B",
-      "opcoes": {
-        "A": "10",
-        "B": "11",
-        "C": "9",
-        "D": "12"
-      },
-      "imagem": "https://i.imgur.com/IOp6n3y.png"
-    },
-    {
-      "pergunta": "Qual jogador é conhecido como CR7?",
-      "resposta": "C",
-      "opcoes": {
-        "A": "Messi",
-        "B": "Neymar",
-        "C": "Cristiano Ronaldo",
-        "D": "Mbappé"
-      },
-      "imagem": "https://i.imgur.com/IOp6n3y.png"
-    }
-  ],
+    {"pergunta":"Qual seleção venceu a Copa do Mundo de 2002?","resposta":"B","opcoes":{"A":"Alemanha","B":"Brasil","C":"Argentina","D":"Itália"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é o maior artilheiro da história da Copa do Mundo?","resposta":"C","opcoes":{"A":"Pelé","B":"Maradona","C":"Miroslav Klose","D":"Ronaldo Fenômeno"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual time ganhou a Champions League 2020/21?","resposta":"D","opcoes":{"A":"Barcelona","B":"Liverpool","C":"PSG","D":"Chelsea"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem ganhou a Bola de Ouro 2021?","resposta":"A","opcoes":{"A":"Lionel Messi","B":"Cristiano Ronaldo","C":"Robert Lewandowski","D":"Kylian Mbappé"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem venceu a Copa América 2019?","resposta":"C","opcoes":{"A":"Brasil","B":"Argentina","C":"Brasil","D":"Chile"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual jogador é conhecido como CR7?","resposta":"B","opcoes":{"A":"Messi","B":"Cristiano Ronaldo","C":"Neymar","D":"Mbappé"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Em que país será a Copa do Mundo 2026?","resposta":"C","opcoes":{"A":"Brasil","B":"Qatar","C":"Canadá, EUA e México","D":"Inglaterra"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é o maior campeão da Champions League?","resposta":"A","opcoes":{"A":"Real Madrid","B":"Milan","C":"Liverpool","D":"Barcelona"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual seleção tem mais Copas do Mundo?","resposta":"B","opcoes":{"A":"Alemanha","B":"Brasil","C":"Itália","D":"Argentina"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem marcou o gol do título da Copa de 1998?","resposta":"D","opcoes":{"A":"Ronaldo Fenômeno","B":"Zidane","C":"Henry","D":"Zidane"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
 
-  "curiosidades": [
-    {
-      "pergunta": "Qual planeta é o mais próximo do Sol?",
-      "resposta": "A",
-      "opcoes": {
-        "A": "Mercúrio",
-        "B": "Vênus",
-        "C": "Terra",
-        "D": "Marte"
-      },
-      "imagem": "https://i.imgur.com/IOp6n3y.png"
-    }
+    {"pergunta":"Qual país sediou a Copa do Mundo 2014?","resposta":"A","opcoes":{"A":"Brasil","B":"Alemanha","C":"Rússia","D":"África do Sul"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem venceu a Eurocopa 2016?","resposta":"B","opcoes":{"A":"Espanha","B":"Portugal","C":"França","D":"Alemanha"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é o maior artilheiro da seleção brasileira?","resposta":"C","opcoes":{"A":"Pelé","B":"Ronaldo","C":"Neymar","D":"Romário"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual clube Neymar jogou antes do PSG?","resposta":"B","opcoes":{"A":"Barcelona","B":"Barcelona","C":"Santos","D":"Real Madrid"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual país ganhou a Copa do Mundo de 2018?","resposta":"D","opcoes":{"A":"Brasil","B":"Alemanha","C":"Argentina","D":"França"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é o goleiro com mais partidas na história da seleção brasileira?","resposta":"A","opcoes":{"A":"Cláudio Taffarel","B":"Dida","C":"Rogério Ceni","D":"Alisson"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual time tem mais títulos do Brasileirão?","resposta":"B","opcoes":{"A":"Santos","B":"Palmeiras","C":"Flamengo","D":"Corinthians"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é conhecido como Fenômeno?","resposta":"C","opcoes":{"A":"Pelé","B":"Romário","C":"Ronaldo","D":"Neymar"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem ganhou a Copa do Mundo de 1994?","resposta":"A","opcoes":{"A":"Brasil","B":"Itália","C":"Alemanha","D":"Argentina"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem venceu a Copa do Mundo de 1990?","resposta":"C","opcoes":{"A":"Brasil","B":"Argentina","C":"Alemanha Ocidental","D":"Itália"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+
+    {"pergunta":"Quem foi eleito melhor jogador do mundo em 2004?","resposta":"B","opcoes":{"A":"Ronaldo","B":"Ronaldinho Gaúcho","C":"Messi","D":"Kaka"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual time é conhecido como La Roja?","resposta":"A","opcoes":{"A":"Espanha","B":"Argentina","C":"Chile","D":"Itália"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem ganhou a Copa Libertadores 2021?","resposta":"C","opcoes":{"A":"Flamengo","B":"Palmeiras","C":"Palmeiras","D":"Athletico"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual país sediou a Copa de 2010?","resposta":"B","opcoes":{"A":"Brasil","B":"África do Sul","C":"Alemanha","D":"Rússia"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem venceu a Copa do Mundo de 1966?","resposta":"C","opcoes":{"A":"Brasil","B":"Alemanha","C":"Inglaterra","D":"Argentina"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é conhecido como La Pulga?","resposta":"B","opcoes":{"A":"Cristiano Ronaldo","B":"Messi","C":"Neymar","D":"Mbappé"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é o maior artilheiro do Barcelona?","resposta":"A","opcoes":{"A":"Messi","B":"Suárez","C":"Neymar","D":"Xavi"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é o maior artilheiro do Real Madrid?","resposta":"D","opcoes":{"A":"Cristiano Ronaldo","B":"Raúl","C":"Benzema","D":"Cristiano Ronaldo"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual seleção venceu a Copa de 2014?","resposta":"C","opcoes":{"A":"Brasil","B":"Argentina","C":"Alemanha","D":"Holanda"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual clube venceu a Premier League 2020/21?","resposta":"B","opcoes":{"A":"Liverpool","B":"Manchester City","C":"Chelsea","D":"Manchester United"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem marcou o gol do título da Copa do Mundo 2018?","resposta":"D","opcoes":{"A":"Mbappé","B":"Griezmann","C":"Modric","D":"Mario Mandzukic (contra)"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é o maior campeão da Eurocopa?","resposta":"A","opcoes":{"A":"Alemanha","B":"Espanha","C":"França","D":"Itália"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual clube venceu a Copa do Brasil 2021?","resposta":"C","opcoes":{"A":"Flamengo","B":"Atlético-MG","C":"Atlético-MG","D":"Palmeiras"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual país venceu a Copa do Mundo de 1970?","resposta":"B","opcoes":{"A":"Itália","B":"Brasil","C":"Alemanha","D":"Argentina"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem marcou o gol mais rápido da Copa de 2002?","resposta":"A","opcoes":{"A":"Hakan Şükür","B":"Ronaldo","C":"Rivaldo","D":"Ronaldinho"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Qual jogador brasileiro venceu o prêmio de melhor do mundo em 2005?","resposta":"C","opcoes":{"A":"Ronaldo","B":"Kaká","C":"Ronaldinho","D":"Neymar"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem venceu a Copa Libertadores 2019?","resposta":"A","opcoes":{"A":"Flamengo","B":"River Plate","C":"Boca Juniors","D":"Palmeiras"},"imagem":"https://i.imgur.com/l3K1G2Q.png"},
+    {"pergunta":"Quem é conhecido como CR7?","resposta":"B","opcoes":{"A":"Messi","B":"Cristiano Ronaldo","C":"Ronaldo Fenômeno","D":"Neymar"},"imagem":"https://i.imgur.com/l3K1G2Q.png"}
   ]
 }
