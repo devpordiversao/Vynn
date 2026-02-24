@@ -1,14 +1,14 @@
 import discord
 from discord.ext import commands, tasks
 from discord.ui import Button, View
-import asyncio
 import random
+import asyncio
 import os
 
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix="/", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-# -------------------- PERGUNTAS DE ANIME --------------------
+# -------------------- PERGUNTAS DO QUIZ (30 perguntas) --------------------
 perguntas = [
     {"pergunta": "Qual o nome completo de Naruto?", "resposta":["Naruto Uzumaki"], "imagem": None, "alternativas":["Naruto Uzumaki","Sasuke Uchiha","Kakashi Hatake","Sakura Haruno"]},
     {"pergunta": "Qual o Kekkei Genkai do Sasuke?", "resposta":["Sharingan"], "imagem": None, "alternativas":["Sharingan","Byakugan","Rinnegan","Mangekyo"]},
@@ -34,14 +34,15 @@ perguntas = [
     {"pergunta": "Quem é o vilão principal de My Hero Academia?", "resposta":["All For One"], "imagem": None, "alternativas":["All For One","Tomura Shigaraki","Dabi","Himiko Toga"]},
     {"pergunta": "Qual o nome do Titã Colossal em Ataque dos Titãs?", "resposta":["Bertholdt Hoover"], "imagem": None, "alternativas":["Bertholdt Hoover","Reiner Braun","Eren Yeager","Annie Leonhart"]},
     {"pergunta": "Qual o nome da organização de caçadores em Hunter x Hunter?", "resposta":["Associação de Caçadores"], "imagem": None, "alternativas":["Associação de Caçadores","Organização Zoldyck","G.I","Phantom Troupe"]},
-    {"pergunta": "Qual o poder do Killua em Hunter x Hunter?", "resposta":["Eletricidade","Godspeed"], "imagem": None, "alternativas":["Eletricidade","Godspeed","Força","Velocidade"]}
-]
-perguntas += [
+    {"pergunta": "Qual o poder do Killua em Hunter x Hunter?", "resposta":["Eletricidade","Godspeed"], "imagem": None, "alternativas":["Eletricidade","Godspeed","Força","Velocidade"]},
     {"pergunta": "Qual o nome do protagonista de Demon Slayer?", "resposta":["Tanjiro Kamado"], "imagem": None, "alternativas":["Tanjiro Kamado","Nezuko Kamado","Zenitsu Agatsuma","Inosuke Hashibira"]},
     {"pergunta": "Quem transformou a irmã do Tanjiro em demônio?", "resposta":["Muzan Kibutsuji"], "imagem": None, "alternativas":["Muzan Kibutsuji","Akaza","Doma","Kokushibo"]},
     {"pergunta": "Qual o nome da respiração do Tanjiro?", "resposta":["Respiração da Água","Respiração do Sol"], "imagem": None, "alternativas":["Respiração da Água","Respiração do Sol","Respiração da Lua","Respiração da Fumaça"]},
     {"pergunta": "Quem é o líder dos Pilares em Demon Slayer?", "resposta":["Kagaya Ubuyashiki"], "imagem": None, "alternativas":["Kagaya Ubuyashiki","Giyu Tomioka","Shinobu Kocho","Kyojuro Rengoku"]},
-    {"pergunta": "Qual o nome do protagonista de Tokyo Ghoul?", "resposta":["Ken Kaneki"], "imagem": None, "alternativas":["Ken Kaneki","Touka Kirishima","Renji Yomo","Hideyoshi Nagachika"]},
+    {"pergunta": "Qual o nome do protagonista de Tokyo Ghoul?", "resposta":["Ken Kaneki"], "imagem": None, "alternativas":["Ken Kaneki","Touka Kirishima","Renji Yomo","Hideyoshi Nagachika"]}
+]
+# -------------------- PERGUNTAS RESTANTES (completando 50) --------------------
+perguntas += [
     {"pergunta": "Qual a organização que caça Ghouls em Tokyo Ghoul?", "resposta":["CCG","Comissão de Contra Medidas de Ghoul"], "imagem": None, "alternativas":["CCG","Aogiri Tree","Ghoul Association","Tokyo Police"]},
     {"pergunta": "Qual o nome do protagonista de Sword Art Online?", "resposta":["Kirito","Kazuto Kirigaya"], "imagem": None, "alternativas":["Kirito","Asuna","Eugeo","Sinon"]},
     {"pergunta": "Qual o nome da namorada do Kirito em SAO?", "resposta":["Asuna"], "imagem": None, "alternativas":["Asuna","Leafa","Sinon","Alice"]},
@@ -67,58 +68,70 @@ perguntas += [
     {"pergunta": "Quem é o protagonista de Seven Deadly Sins?", "resposta":["Meliodas"], "imagem": None, "alternativas":["Meliodas","Elizabeth","Ban","Diane"]},
     {"pergunta": "Qual o pecado do Meliodas?", "resposta":["Ira"], "imagem": None, "alternativas":["Ira","Gula","Luxúria","Inveja"]},
     {"pergunta": "Qual o nome do protagonista de Vinland Saga?", "resposta":["Thorfinn"], "imagem": None, "alternativas":["Thorfinn","Askeladd","Canute","Bjorn"]},
-    {"pergunta": "Quem matou o pai do Thorfinn?", "resposta":["Askeladd"], "imagem": None, "alternativas":["Askeladd","Canute","Bjorn","Floki"]}
+    {"pergunta": "Quem matou o pai do Thorfinn?", "resposta":["Askeladd"], "imagem": None, "alternativas":["Askeladd","Canute","Bjorn","Floki"]},
+    {"pergunta": "Qual o nome do protagonista de Jujutsu Kaisen?", "resposta":["Yuji Itadori"], "imagem": None, "alternativas":["Yuji Itadori","Megumi Fushiguro","Nobara Kugisaki","Satoru Gojo"]},
+    {"pergunta": "Qual o espírito maldito que habita o Yuji?", "resposta":["Ryomen Sukuna"], "imagem": None, "alternativas":["Ryomen Sukuna","Mahito","Jogo","Hanami"]},
+    {"pergunta": "Quem é o professor do Yuji em Jujutsu Kaisen?", "resposta":["Satoru Gojo"], "imagem": None, "alternativas":["Satoru Gojo","Kento Nanami","Suguru Geto","Toge Inumaki"]},
+    {"pergunta": "Qual o nome do protagonista de Chainsaw Man?", "resposta":["Denji"], "imagem": None, "alternativas":["Denji","Power","Aki Hayakawa","Makima"]}
 ]
-# -------------------- FUNÇÕES DO QUIZ --------------------
-class QuizView(View):
-    def __init__(self, pergunta_obj, user):
-        super().__init__(timeout=15)
-        self.pergunta_obj = pergunta_obj
-        self.user = user
-        self.resolvido = False
 
-        for alt in pergunta_obj["alternativas"]:
-            button = Button(label=alt, style=discord.ButtonStyle.primary)
-            button.callback = self.make_callback(alt)
-            self.add_item(button)
-
-    def make_callback(self, alt):
-        async def callback(interaction):
-            if interaction.user != self.user:
-                await interaction.response.send_message("Só você pode responder!", ephemeral=True)
-                return
-            if self.resolvido:
-                return
-            self.resolvido = True
-            if alt in self.pergunta_obj["resposta"]:
-                await interaction.response.edit_message(content=f"✅ Correto! A resposta era: {self.pergunta_obj['resposta'][0]}", view=None)
-            else:
-                await interaction.response.edit_message(content=f"❌ Você errou, {self.user.mention}! A resposta era: {self.pergunta_obj['resposta'][0]}", view=None)
-        return callback
-
+# -------------------- FUNÇÃO PARA ENVIAR PERGUNTA --------------------
 async def enviar_pergunta(ctx, pergunta_obj):
-    embed = discord.Embed(title="❓ Pergunta do Quiz", description=pergunta_obj["pergunta"], color=discord.Color.blurple())
-    if pergunta_obj["imagem"]:
-        embed.set_image(url=pergunta_obj["imagem"])
-    view = QuizView(pergunta_obj, ctx.author)
-    await ctx.send(embed=embed, view=view)
+    """Envia uma pergunta de quiz com botões de múltipla escolha"""
+    view = View(timeout=20)  # 20 segundos para responder
 
-# -------------------- COMANDOS DO BOT --------------------
+    for alt in pergunta_obj["alternativas"]:
+        button = Button(label=alt, style=discord.ButtonStyle.primary)
+
+        async def callback(interaction, alt=alt):
+            if interaction.user != ctx.author:
+                await interaction.response.send_message("Você não pode responder esta pergunta!", ephemeral=True)
+                return
+            if alt in pergunta_obj["resposta"]:
+                await interaction.response.edit_message(content=f"✅ Correto! A resposta era: {', '.join(pergunta_obj['resposta'])}", view=None)
+            else:
+                await interaction.response.edit_message(content=f"❌ Você errou! A resposta correta era: {', '.join(pergunta_obj['resposta'])}", view=None)
+
+        button.callback = callback
+        view.add_item(button)
+
+    embed = discord.Embed(title="Quiz de Anime", description=pergunta_obj["pergunta"], color=discord.Color.blurple())
+    await ctx.send(embed=embed, view=view)
+    # -------------------- COMANDOS SLASH --------------------
 @bot.command()
 async def iniciar(ctx):
     """Inicia o quiz de anime"""
-    pergunta_obj = random.choice(perguntas)
+    ctx.quiz_perguntas = perguntas.copy()  # Faz uma cópia das perguntas para cada usuário
+    if not ctx.quiz_perguntas:
+        await ctx.send("Não há perguntas disponíveis no momento!")
+        return
+    pergunta_obj = random.choice(ctx.quiz_perguntas)
+    ctx.quiz_perguntas.remove(pergunta_obj)
     await enviar_pergunta(ctx, pergunta_obj)
+
+
+@bot.command()
+async def next(ctx):
+    """Mostra a próxima pergunta do quiz"""
+    if not hasattr(ctx, "quiz_perguntas") or not ctx.quiz_perguntas:
+        await ctx.send("Não há mais perguntas! Use /iniciar para começar novamente.")
+        return
+    pergunta_obj = random.choice(ctx.quiz_perguntas)
+    ctx.quiz_perguntas.remove(pergunta_obj)
+    await enviar_pergunta(ctx, pergunta_obj)
+
 
 # -------------------- MINIGAMES SIMPLES --------------------
 @bot.command()
 async def pedrapapeltesoura(ctx):
+    """Inicia Pedra, Papel ou Tesoura"""
     opcoes = ["Pedra","Papel","Tesoura"]
     escolha_bot = random.choice(opcoes)
     await ctx.send(f"O bot escolheu: {escolha_bot}\nFaça sua jogada com /jogar [Pedra/Papel/Tesoura]")
 
 @bot.command()
 async def jogar(ctx, escolha):
+    """Joga Pedra, Papel ou Tesoura"""
     escolha = escolha.capitalize()
     opcoes = ["Pedra","Papel","Tesoura"]
     if escolha not in opcoes:
@@ -134,29 +147,67 @@ async def jogar(ctx, escolha):
         resultado = "Você perdeu!"
     await ctx.send(f"Você: {escolha}\nBot: {escolha_bot}\nResultado: {resultado}")
 
-# -------------------- LOGS DE MODERAÇÃO SIMPLIFICADA --------------------
-mod_log_channel_id = None  # Coloque seu canal de logs se quiser
 
+# -------------------- OUTROS MINIGAMES SIMPLES --------------------
+@bot.command()
+async def dado(ctx):
+    """Joga um dado de 6 lados"""
+    resultado = random.randint(1,6)
+    await ctx.send(f"🎲 O dado caiu em: {resultado}")
+
+@bot.command()
+async def moeda(ctx):
+    """Joga cara ou coroa"""
+    resultado = random.choice(["Cara", "Coroa"])
+    await ctx.send(f"🪙 O resultado foi: {resultado}")
+    # -------------------- MODERAÇÃO AVANÇADA --------------------
 @bot.event
 async def on_member_ban(guild, user):
-    msg = f"⚠️ {user} foi banido de {guild.name}."
-    print(msg)
-    owner = await bot.fetch_user(1327679436128129159)  # seu ID
-    await owner.send(msg)
-    if mod_log_channel_id:
-        channel = bot.get_channel(mod_log_channel_id)
-        if channel:
-            await channel.send(msg)
+    # Envia log para o servidor (caso haja canal #logs)
+    canal_log = discord.utils.get(guild.text_channels, name="logs")
+    if canal_log:
+        await canal_log.send(f"🚫 {user} foi banido do servidor {guild.name}")
+    # Envia log para o dono do bot via DM
+    dono = await bot.fetch_user(1327679436128129159)  # Substitua pelo seu ID
+    await dono.send(f"🚫 {user} foi banido do servidor {guild.name}")
 
 @bot.event
 async def on_member_unban(guild, user):
-    msg = f"ℹ️ {user} foi desbanido em {guild.name}."
-    owner = await bot.fetch_user(1327679436128129159)
-    await owner.send(msg)
-    if mod_log_channel_id:
-        channel = bot.get_channel(mod_log_channel_id)
-        if channel:
-            await channel.send(msg)
+    dono = await bot.fetch_user(YOUR_USER_ID)
+    await dono.send(f"✅ {user} foi desbanido do servidor {guild.name}")
 
-# -------------------- RODAR BOT --------------------
+@bot.event
+async def on_member_update(before, after):
+    dono = await bot.fetch_user(YOUR_USER_ID)
+    if before.nick != after.nick:
+        await dono.send(f"✏️ {before} mudou o nickname para {after.nick} em {after.guild.name}")
+
+# -------------------- MINIGAMES AVANÇADOS --------------------
+@bot.command()
+async def adivinhar(ctx):
+    """Minigame: Adivinhe o número"""
+    numero = random.randint(1,50)
+    await ctx.send("🎯 Tente adivinhar o número entre 1 e 50 usando /palpite [número]")
+
+    def check(m):
+        return m.author == ctx.author and m.channel == ctx.channel
+
+    for _ in range(5):  # 5 tentativas
+        try:
+            msg = await bot.wait_for("message", check=check, timeout=20)
+            palpite = int(msg.content)
+            if palpite == numero:
+                await ctx.send(f"🎉 Correto! O número era {numero}")
+                return
+            elif palpite < numero:
+                await ctx.send("⬆️ Mais alto!")
+            else:
+                await ctx.send("⬇️ Mais baixo!")
+        except asyncio.TimeoutError:
+            await ctx.send(f"⏰ Tempo esgotado! O número era {numero}")
+            return
+        except ValueError:
+            await ctx.send("Digite apenas números!")
+
+# -------------------- START DO BOT --------------------
 bot.run(os.environ["DISCORD_TOKEN"])
