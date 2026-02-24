@@ -1,24 +1,40 @@
 {
-  "matematica": [
+  "futebol": [
     {
-      "pergunta": "Pergunta 1 de matematica?",
-      "resposta": "resposta1"
+      "pergunta": "Quantos jogadores um time tem em campo?",
+      "resposta": "B",
+      "opcoes": {
+        "A": "10",
+        "B": "11",
+        "C": "9",
+        "D": "12"
+      },
+      "imagem": "https://i.imgur.com/IOp6n3y.png"
     },
     {
-      "pergunta": "Pergunta 2 de matematica?",
-      "resposta": "resposta2"
-    },
+      "pergunta": "Qual jogador é conhecido como CR7?",
+      "resposta": "C",
+      "opcoes": {
+        "A": "Messi",
+        "B": "Neymar",
+        "C": "Cristiano Ronaldo",
+        "D": "Mbappé"
+      },
+      "imagem": "https://i.imgur.com/IOp6n3y.png"
+    }
+  ],
+
+  "curiosidades": [
     {
-      "pergunta": "Pergunta 3 de matematica?",
-      "resposta": "resposta3"
-    },
-    {
-      "pergunta": "Pergunta 4 de matematica?",
-      "resposta": "resposta4"
-    },
-    {
-      "pergunta": "Pergunta 5 de matematica?",
-      "resposta": "resposta5"
+      "pergunta": "Qual planeta é o mais próximo do Sol?",
+      "resposta": "A",
+      "opcoes": {
+        "A": "Mercúrio",
+        "B": "Vênus",
+        "C": "Terra",
+        "D": "Marte"
+      },
+      "imagem": "https://i.imgur.com/IOp6n3y.png"
     }
   ]
 }
