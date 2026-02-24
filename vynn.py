@@ -1,236 +1,199 @@
 import discord
 from discord.ext import commands, tasks
+from discord.ui import Button, View, Select
 import json
 import asyncio
 import os
+import random
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="/", intents=intents)
 
-# ---------------------------------------
-# CARREGANDO TEMAS
-# ---------------------------------------
-temas_perguntas = {}
-tema_files = ["temas.json"]
-tema_nomes = ["Animes","História","Futebol","Matemática"]
+# Carregar perguntas do JSON
+with open("temas.json", "r", encoding="utf-8") as f:
+    perguntas = json.load(f)
 
-for nome, arquivo in zip(tema_nomes, tema_files):
-    with open(arquivo, "r", encoding="utf-8") as f:
-        temas_perguntas[nome] = json.load(f)
+# Dicionário para controlar quizzes por usuário
+quizzes = {}
+timers = {}
+# Função para enviar pergunta com botões
+async def enviar_pergunta(user, canal, pergunta):
+    # Criar embed
+    embed = discord.Embed(
+        title=f"Pergunta para {user.name}",
+        description=pergunta["pergunta"],
+        color=discord.Color.blue()
+    )
 
-# ---------------------------------------
-# ESTRUTURAS DE CONTROLE
-# ---------------------------------------
-quiz_ativo = {}   # Canal: {tema, indice, modo}
-quiz_top3 = {}    # Canal: {user_id: pontos}
+    if pergunta["imagem"]:
+        embed.set_image(url=pergunta["imagem"])
 
-# ---------------------------------------
-# FUNÇÃO PARA CRIAR BOTÕES DE MÚLTIPLA ESCOLHA
-# ---------------------------------------
-def criar_view(pergunta_data, usuario_acertou):
-    view = discord.ui.View(timeout=None)
-    ja_clicou = set()
-    
-    for i, alt in enumerate(pergunta_data["alternativas"]):
-        letra = chr(65+i)  # A, B, C, D
-        btn = discord.ui.Button(label=f"{letra}. {alt}", style=discord.ButtonStyle.primary)
-        
-        async def button_callback(interaction, resposta=alt):
-            if interaction.user.id in ja_clicou:
-                await interaction.response.send_message("Você já clicou!", ephemeral=True)
-                return
-            ja_clicou.add(interaction.user.id)
-            
-            correto = any(resposta.lower() in r.lower() or r.lower() in resposta.lower() for r in pergunta_data["resposta"])
-            if correto:
-                usuario_acertou[interaction.user.id] = usuario_acertou.get(interaction.user.id, 0) + 1
-                await interaction.response.send_message(f"✅ Você acertou, {interaction.user.name}!", ephemeral=True)
-            else:
-                await interaction.response.send_message(f"❌ Você errou! {interaction.user.name}", ephemeral=True)
-        
-        btn.callback = button_callback
-        view.add_item(btn)
-    return view
+    # Criar view com botões de alternativas
+    view = View(timeout=20)
+    alternativas = pergunta["alternativas"]
+    random.shuffle(alternativas)  # embaralhar
 
-# ---------------------------------------
-# FUNÇÃO PARA ENVIAR PERGUNTA COM TIMER
-# ---------------------------------------
-async def enviar_pergunta(interaction: discord.Interaction, tema, indice):
-    pergunta_data = temas_perguntas[tema][indice]
-    embed = discord.Embed(title=f"Pergunta {indice+1}/{len(temas_perguntas[tema])}", description=pergunta_data["pergunta"], color=discord.Color.blurple())
-    if pergunta_data.get("imagem"):
-        embed.set_image(url=pergunta_data["imagem"])
-    
-    usuario_acertou = {}
-    view = criar_view(pergunta_data, usuario_acertou)
-    
-    msg = await interaction.response.send_message(embed=embed, view=view, ephemeral=False)
-    
-    # Timer visível (atualiza a cada 5 segundos)
-    tempo = 20
-    while tempo > 0:
-        await asyncio.sleep(5)
-        tempo -= 5
-        try:
-            await msg.edit(embed=discord.Embed(
-                title=f"Pergunta {indice+1}/{len(temas_perguntas[tema])}",
-                description=f"{pergunta_data['pergunta']}\n⏱ Tempo restante: {tempo} segundos",
-                color=discord.Color.blurple()
-            ), view=view)
-        except:
-            pass
-    
-    # Se ninguém acertou
-    if not usuario_acertou:
-        await interaction.followup.send(f"⏰ Tempo esgotado! Ninguém acertou. Resposta correta: {', '.join(pergunta_data['resposta'])}")
-    
-    # Atualizando top3
-    if interaction.channel.id not in quiz_top3:
-        quiz_top3[interaction.channel.id] = {}
-    for user_id, pontos in usuario_acertou.items():
-        quiz_top3[interaction.channel.id][user_id] = quiz_top3[interaction.channel.id].get(user_id, 0) + pontos
+    # Callback de clique
+    async def botao_callback(interaction):
+        if interaction.user != user:
+            await interaction.response.send_message("Essa pergunta não é sua!", ephemeral=True)
+            return
 
-# ---------------------------------------
-# BOT PRONTO PARA REGISTRAR SLASH COMMANDS
-# ---------------------------------------
-@bot.event
-async def on_ready():
-    await bot.tree.sync()
-    print(f'Bot logado como {bot.user}')
-    # ---------------------------------------
-# COMANDOS DO QUIZ / SLASH - DISCORD.PY 2.X
-# ---------------------------------------
+        if hasattr(view, "respondido") and view.respondido:
+            await interaction.response.send_message("Você já respondeu!", ephemeral=True)
+            return
 
-from discord import Option  # Para opções de slash command
+        view.respondido = True
+        if interaction.data["custom_id"] in alternativas and alternativas[int(interaction.data["custom_id"])] in pergunta["resposta"]:
+            await interaction.response.send_message(f"✅ Você acertou, {user.mention}!", ephemeral=True)
+        else:
+            await interaction.response.send_message(f"❌ Você errou, {user.mention}! A resposta era: {', '.join(pergunta['resposta'])}", ephemeral=True)
 
-@bot.tree.command(name="iniciar", description="Inicia um quiz com tema selecionado")
-async def iniciar(interaction: discord.Interaction, tema: Option(str, "Escolha o tema", choices=tema_nomes)):
-    if interaction.channel.id in quiz_ativo:
-        await interaction.response.send_message("⚠️ Um quiz já está ativo neste canal!", ephemeral=True)
-        return
-    
-    quiz_ativo[interaction.channel.id] = {"tema": tema, "indice": 0, "modo": "múltipla"}
-    quiz_top3[interaction.channel.id] = {}
-    
-    await interaction.response.send_message(f"🎮 Quiz iniciado! Tema: **{tema}**\nUse `/next` para avançar manualmente ou `/auto` para automático.")
+    # Criar botões
+    for idx, alt in enumerate(alternativas):
+        button = Button(label=f"{chr(65+idx)}. {alt}", style=discord.ButtonStyle.primary, custom_id=str(idx))
+        button.callback = botao_callback
+        view.add_item(button)
 
-@bot.tree.command(name="next", description="Avança para a próxima pergunta")
-async def next_pergunta(interaction: discord.Interaction):
-    if interaction.channel.id not in quiz_ativo:
-        await interaction.response.send_message("⚠️ Nenhum quiz ativo neste canal. Use /iniciar para começar.", ephemeral=True)
-        return
-    
-    quiz_data = quiz_ativo[interaction.channel.id]
-    indice = quiz_data["indice"]
-    tema = quiz_data["tema"]
-    
-    if indice >= len(temas_perguntas[tema]):
-        await interaction.response.send_message("✅ Quiz finalizado!", ephemeral=True)
-        # Mostrar Top 3
-        top3 = sorted(quiz_top3[interaction.channel.id].items(), key=lambda x: x[1], reverse=True)[:3]
-        if top3:
-            msg = "🏆 **Top 3:**\n"
-            for user_id, pontos in top3:
-                user = await bot.fetch_user(user_id)
-                msg += f"{user.name}: {pontos} ponto(s)\n"
-            await interaction.followup.send(msg)
-        del quiz_ativo[interaction.channel.id]
-        del quiz_top3[interaction.channel.id]
-        return
-    
-    await enviar_pergunta(interaction, tema, indice)
-    quiz_ativo[interaction.channel.id]["indice"] += 1
+    await canal.send(embed=embed, view=view)
 
-@bot.tree.command(name="auto", description="Inicia o quiz automático até o fim")
-async def auto_quiz(interaction: discord.Interaction, tema: Option(str, "Escolha o tema", choices=tema_nomes)):
-    if interaction.channel.id in quiz_ativo:
-        await interaction.response.send_message("⚠️ Um quiz já está ativo neste canal!", ephemeral=True)
-        return
-    
-    quiz_ativo[interaction.channel.id] = {"tema": tema, "indice": 0, "modo": "múltipla"}
-    quiz_top3[interaction.channel.id] = {}
-    await interaction.response.send_message(f"🎮 Quiz automático iniciado! Tema: **{tema}**\nUse `/stop` para pausar.")
+# Comando /iniciar
+@bot.slash_command(name="iniciar", description="Inicia um quiz com tema selecionado")
+async def iniciar(ctx):
+    user = ctx.author
+    canal = ctx.channel
 
-    while quiz_ativo.get(interaction.channel.id):
-        indice = quiz_ativo[interaction.channel.id]["indice"]
-        if indice >= len(temas_perguntas[tema]):
-            # Terminar quiz
-            top3 = sorted(quiz_top3[interaction.channel.id].items(), key=lambda x: x[1], reverse=True)[:3]
-            msg = "🏆 **Top 3 Final:**\n"
-            for user_id, pontos in top3:
-                user = await bot.fetch_user(user_id)
-                msg += f"{user.name}: {pontos} ponto(s)\n"
-            await interaction.followup.send(msg)
-            del quiz_ativo[interaction.channel.id]
-            del quiz_top3[interaction.channel.id]
-            break
-        await enviar_pergunta(interaction, tema, indice)
-        quiz_ativo[interaction.channel.id]["indice"] += 1
-        await asyncio.sleep(2)  # Pequena pausa entre perguntas
+    # Sortear pergunta aleatória
+    pergunta = random.choice(perguntas)
+    quizzes[user.id] = pergunta
+    await enviar_pergunta(user, canal, pergunta)
 
-@bot.tree.command(name="stop", description="Para o quiz em andamento")
-async def stop_quiz(interaction: discord.Interaction):
-    if interaction.channel.id not in quiz_ativo:
-        await interaction.response.send_message("⚠️ Nenhum quiz ativo neste canal.", ephemeral=True)
-        return
-    del quiz_ativo[interaction.channel.id]
-    await interaction.response.send_message("⏹ Quiz pausado.", ephemeral=True)
-    # ---------------------------------------
-# MODERAÇÃO AVANÇADA E MINIGAMES - DISCORD.PY 2.X
-# ---------------------------------------
+# Comando /next
+@bot.slash_command(name="next", description="Próxima pergunta do quiz")
+async def next_pergunta(ctx):
+    user = ctx.author
+    canal = ctx.channel
+    pergunta = random.choice(perguntas)
+    quizzes[user.id] = pergunta
+    await enviar_pergunta(user, canal, pergunta)
 
-import random
+# Comando /auto
+@bot.slash_command(name="auto", description="Inicia o quiz automático com timer de 20s")
+async def auto(ctx):
+    user = ctx.author
+    canal = ctx.channel
 
-# Substitua pelo seu ID
-OWNER_ID = 1327679436128129159
+    async def loop_quiz():
+        while True:
+            pergunta = random.choice(perguntas)
+            quizzes[user.id] = pergunta
+            await enviar_pergunta(user, canal, pergunta)
+            await asyncio.sleep(20)  # Timer 20 segundos
 
-# ---------- MODERAÇÃO ----------
+    if user.id in timers:
+        await ctx.respond("Quiz automático já está rodando!", ephemeral=True)
+    else:
+        task = bot.loop.create_task(loop_quiz())
+        timers[user.id] = task
+        await ctx.respond("Quiz automático iniciado! Use /stop para parar.", ephemeral=True)
+
+# Comando /stop
+@bot.slash_command(name="stop", description="Para o quiz automático")
+async def stop(ctx):
+    user = ctx.author
+    if user.id in timers:
+        timers[user.id].cancel()
+        del timers[user.id]
+        await ctx.respond("Quiz automático parado!", ephemeral=True)
+    else:
+        await ctx.respond("Você não tinha um quiz automático rodando.", ephemeral=True)
+        # -------------------- MODERAÇÃO AVANÇADA --------------------
+log_owner_id = 1327679436128129159  # Seu ID para receber logs
+
+async def enviar_log_dm(mensagem):
+    owner = await bot.fetch_user(log_owner_id)
+    await owner.send(mensagem)
+
 @bot.event
 async def on_member_ban(guild, user):
-    log_channel = discord.utils.get(guild.text_channels, name="mod-logs")
-    if log_channel:
-        await log_channel.send(f"🚫 {user.name} foi banido do servidor.")
-    owner = await bot.fetch_user(OWNER_ID)
-    await owner.send(f"[BAN] {user.name} foi banido do servidor {guild.name}.")
+    canal = discord.utils.get(guild.channels, name="logs")  # opcional
+    msg = f"🚫 {user} foi banido no servidor {guild.name}"
+    if canal:
+        await canal.send(msg)
+    await enviar_log_dm(msg)
 
 @bot.event
 async def on_member_unban(guild, user):
-    owner = await bot.fetch_user(OWNER_ID)
-    await owner.send(f"[UNBAN] {user.name} foi desbanido do servidor {guild.name}.")
+    msg = f"✅ {user} foi desbanido no servidor {guild.name}"
+    await enviar_log_dm(msg)
 
 @bot.event
 async def on_member_update(before, after):
+    # Exemplo de mute/unmute por roles
     mute_role = discord.utils.get(after.guild.roles, name="Muted")
-    owner = await bot.fetch_user(OWNER_ID)
     if mute_role:
-        if mute_role in after.roles and mute_role not in before.roles:
-            await owner.send(f"[MUTE] {after.name} foi mutado no servidor {after.guild.name}.")
-        elif mute_role not in after.roles and mute_role in before.roles:
-            await owner.send(f"[UNMUTE] {after.name} foi desmutado no servidor {after.guild.name}.")
+        if mute_role not in before.roles and mute_role in after.roles:
+            await enviar_log_dm(f"🔇 {after} foi mutado em {after.guild.name}")
+        elif mute_role in before.roles and mute_role not in after.roles:
+            await enviar_log_dm(f"🔊 {after} foi desmutado em {after.guild.name}")
 
-# ---------- MINIGAMES ----------
-@bot.tree.command(name="ppt", description="Jogue Pedra-Papel-Tesoura com o bot")
-async def pedra_papel_tesoura(interaction: discord.Interaction, escolha: Option(str, "Sua escolha", choices=["Pedra","Papel","Tesoura"])):
-    opcoes = ["Pedra","Papel","Tesoura"]
-    bot_escolha = random.choice(opcoes)
+# -------------------- MINIGAMES AVANÇADOS --------------------
+# Pedra, Papel, Tesoura
+@bot.slash_command(name="ppt", description="Jogue Pedra, Papel ou Tesoura com o bot")
+async def ppt(ctx, escolha: str):
+    opcoes = ["pedra", "papel", "tesoura"]
+    escolha_bot = random.choice(opcoes)
+    escolha = escolha.lower()
     resultado = ""
-    if escolha == bot_escolha:
+    if escolha == escolha_bot:
         resultado = "Empate!"
-    elif (escolha == "Pedra" and bot_escolha == "Tesoura") or \
-         (escolha == "Papel" and bot_escolha == "Pedra") or \
-         (escolha == "Tesoura" and bot_escolha == "Papel"):
-        resultado = "Você venceu! 🎉"
+    elif (escolha == "pedra" and escolha_bot == "tesoura") or \
+         (escolha == "papel" and escolha_bot == "pedra") or \
+         (escolha == "tesoura" and escolha_bot == "papel"):
+        resultado = "Você ganhou!"
     else:
-        resultado = "Você perdeu 😢"
-    await interaction.response.send_message(f"Você: {escolha}\nBot: {bot_escolha}\nResultado: {resultado}")
+        resultado = "Você perdeu!"
+    await ctx.respond(f"Você escolheu: {escolha}\nBot escolheu: {escolha_bot}\n{resultado}")
 
-@bot.tree.command(name="adivinhar", description="Tente adivinhar o número que o bot pensou (1-10)")
-async def adivinhar(interaction: discord.Interaction, numero: Option(int, "Escolha um número de 1 a 10", min_value=1, max_value=10)):
-    bot_num = random.randint(1,10)
-    if numero == bot_num:
-        await interaction.response.send_message(f"🎉 Acertou! Eu pensei no número {bot_num}")
+# Dado (1-6)
+@bot.slash_command(name="dado", description="Rola um dado de 1 a 6")
+async def dado(ctx):
+    n = random.randint(1, 6)
+    await ctx.respond(f"🎲 Você tirou: {n}")
+
+# Adivinhação de número
+@bot.slash_command(name="adivinhar", description="Tente adivinhar um número de 1 a 10")
+async def adivinhar(ctx, numero: int):
+    n = random.randint(1, 10)
+    if numero == n:
+        await ctx.respond(f"🎉 Correto! O número era {n}")
     else:
-        await interaction.response.send_message(f"❌ Errou! Eu pensei no número {bot_num}")
+        await ctx.respond(f"❌ Errado! O número era {n}")
 
-# ---------- INICIALIZAÇÃO DO BOT ----------
+# Cara ou Coroa
+@bot.slash_command(name="caraoucoroa", description="Jogue Cara ou Coroa")
+async def caraoucoroa(ctx, escolha: str):
+    escolha = escolha.lower()
+    resultado = random.choice(["cara", "coroa"])
+    if escolha == resultado:
+        await ctx.respond(f"🎉 Você escolheu {escolha} e saiu {resultado}. Você ganhou!")
+    else:
+        await ctx.respond(f"❌ Você escolheu {escolha} e saiu {resultado}. Você perdeu!")
+        # -------------------- EVENTOS GERAIS --------------------
+@bot.event
+async def on_ready():
+    print(f"Bot conectado como {bot.user}")
+    print("✅ Vynn.py rodando!")
+
+# -------------------- COMANDOS AUXILIARES --------------------
+@bot.slash_command(name="perfil", description="Mostra seu perfil no bot")
+async def perfil(ctx):
+    user = ctx.author
+    await ctx.respond(f"Perfil de {user.name}\nID: {user.id}\nParticipando do quiz: {'Sim' if user.id in quizzes else 'Não'}")
+
+@bot.slash_command(name="temas", description="Mostra os temas disponíveis")
+async def temas(ctx):
+    await ctx.respond("🎮 Tema disponível: **Animes**")
+
+# -------------------- RODA O BOT --------------------
 bot.run(os.environ["DISCORD_TOKEN"])
